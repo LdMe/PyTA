@@ -1,6 +1,6 @@
 # PyTA
 
-## Programa de ayuda para correción de ejercicios de programación
+## Programa de ayuda para correción de ejercicios de programación usando GPT3 de openAI
 
 Con este simple script podemos corregir nuestros ejercicios y ver cómo deberíamos solucionar los errores. No es 100% efectivo, y el resultado puede variar en cada iteración. Usadlo bajo vuestra propia responsabilidad y poniendo mucha atención a los resultados, es posible que la explicación sea correcta pero haya algún error en el código, o puede pasar lo contrario. Esta es una prueba conceptual para demostrar la utilidad de la IA y el potencial que tiene de cambiar nuestra forma de trabajar.
 
