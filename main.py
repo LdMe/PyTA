@@ -12,7 +12,6 @@ def read_file(filename):
     
 def save_output(filename, output):
     name_array = separate_extension(filename)
-    print(name_array)
     name = name_array[0].split("/")[-1]
     extension = name_array[1]
     output_filename = "output/" + name + extension

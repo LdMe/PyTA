@@ -3,7 +3,8 @@ import openai
 import sys
 import dotenv
 
-
+engine = "text-davinci-003"
+#engine = "code-davinci-002"
 class Openai_api:
     def __init__(self):
         dotenv.load_dotenv()
@@ -12,7 +13,7 @@ class Openai_api:
 
     def get_response(self,input):
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine=engine,
             prompt= input,
             temperature=0.9,
             max_tokens=2000,
