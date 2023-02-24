@@ -9,7 +9,7 @@ Con este simple script podemos corregir nuestros ejercicios y ver cómo debería
 * Las librerías necesarias se encuentran en ```requirements.txt```. Para instalarlas podemos ejecutar ```pip install -r requirements.txt```
 * Hay que crear un archivo .env con la siguiente línea: ```OPENAI_API_KEY=<tu-clave>``` donde ```<tu-clave>``` es la clave de la API que openAI te proporcionará.
 
-API de openAI: https://openai.com/api/ (registro gratuito)  
+API de openAI: https://openai.com/api/ (registro gratuito, $18 en tokens gratis)  
 Sección de claves API: https://platform.openai.com/account/api-keys
 
 
