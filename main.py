@@ -7,7 +7,7 @@ def separate_extension(filename):
     return os.path.splitext(filename)
 
 def read_file(filename):
-    with open(filename, "r") as file:
+    with open("input/"+filename, "r") as file:
         return file.read()
     
 def save_output(filename, output):
@@ -21,7 +21,7 @@ def save_output(filename, output):
 
 def main(argv):
     api = Openai_api()
-    filename = argv[1] if len(argv) > 1 else "input/prueba.js"
+    filename = argv[1] if len(argv) > 1 else "prueba.js"
     input = read_file(filename)
     input = "Teniendo en cuenta el enunciado, corrige los errores del código, mostrando solo los errores y explicando cómo resolver cada uno de ellos. Si la función no hace lo que se pide, propón una alternativa.\n"+input
     output = api.get_response(input)
