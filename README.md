@@ -12,7 +12,7 @@ Sección de claves API: https://platform.openai.com/account/api-keys
 
 
 ### Uso:
-
+* crear directorios "input" y "output" si no existen
 * poner el archivo que queramos corregir en el directorio input
 * ejecutar el archivo ``` main.py <nombre-fichero> ```, si no se introduce ninguno por defecto buscará el archivo ```prueba.js``` dentro de input
 * el resultado se guardará en el directorio output, con el nombre y extensión del archivo corregido
