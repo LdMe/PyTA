@@ -1,4 +1,3 @@
-import sys
 import os
 from openai_api import Openai_api
 
@@ -10,6 +9,9 @@ def read_file(filename):
     with open("input/"+filename, "r") as file:
         return file.read()
     
+def ls(ruta = '.'):
+    return os.listdir(ruta)
+    
 def save_output(filename, output):
     name_array = separate_extension(filename)
     name = name_array[0].split("/")[-1]
@@ -18,15 +20,15 @@ def save_output(filename, output):
     with open(output_filename, "w") as file:
         file.write(output)
 
-def main(argv):
+def main():
     api = Openai_api()
-    filename = argv[1] if len(argv) > 1 else "prueba.js"
-    input = read_file(filename)
-    input = "Teniendo en cuenta el enunciado, corrige los errores del código, mostrando solo los errores y explicando cómo resolver cada uno de ellos. Si la función no hace lo que se pide, propón una alternativa.\n"+input
-    output = api.get_response(input)
-    print(output)
-    save_output(filename, output)
+    for filename in ls("input"):
+        input = read_file(filename)
+        input = "Teniendo en cuenta el enunciado, corrige los errores del código, mostrando solo los errores y explicando cómo resolver cada uno de ellos. Si la función no hace lo que se pide, propón una alternativa.\n"+input
+        output = api.get_response(input)
+        print(output)
+        save_output(filename, output)
 
 if __name__ == "__main__":
 
-    main(sys.argv)
+    main()
