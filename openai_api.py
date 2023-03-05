@@ -3,21 +3,24 @@ import openai
 import sys
 import dotenv
 
-engine = "text-davinci-003"
+#engine = "text-davinci-003"
 #engine = "code-davinci-002"
+engine = "gpt-3.5-turbo"
 class Openai_api:
     def __init__(self):
         dotenv.load_dotenv()
-        openai.organization = "org-uhKzEYzMFJtrozvGrNhXRzgP"
+        openai.organization = os.getenv("OPENAI_ORGANIZATION")
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    def get_response(self,input):
-        response = openai.Completion.create(
-            engine=engine,
-            prompt= input,
-            temperature=0.9,
-            max_tokens=2000,
-            top_p=1,
+    def get_response(self,context,text):
+        response = openai.ChatCompletion.create(
+            model=engine,
+            
+            messages = [
+                 {'role':"system","content": context},
+                 {"role":"user","content": text}
+            ]
             
         )
-        return response["choices"][0]["text"]
+        
+        return response["choices"][0]["message"]["content"]
