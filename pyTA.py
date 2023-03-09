@@ -53,7 +53,7 @@ class PyTA:
             text = CORRECT + text
             output = self.get_response(text)
             print(output)
-            self.save_output(filename, output,markdown)
+            self.save_output(filename, output,markdown=markdown)
             
     def create_classes(self,theme,filename,is_exercise=False, append=False):
         suffix = "_ejercicios" if is_exercise else ""
@@ -85,7 +85,7 @@ class PyTA:
         else:
             print("Opción no válida")
             self.interactive(last_choices)
-        again = self.input_text("¿Quieres hacer otra cosa? (s/n) ")
+        again = self.input_text("\n\n¿Quieres hacer otra cosa? (s/n) ")
         if again == "s":
             last_choices = {
                 'class_or_correct': class_or_correct,
