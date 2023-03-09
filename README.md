@@ -10,11 +10,11 @@ Para poder poner en marcha el programa PyTA, se deben seguir los siguientes paso
 2. Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en un archivo .env en la raíz del proyecto. El archivo .env debe tener el siguiente formato:
 
 ```
-OPENAI_API_KEY=<llave_de_api>
+OPENAI_API_KEY=<clave_de_api>
 OPENAI_ORGANIZATION=<nombre_de_la_organizacion>
 ```
 
-Donde `<llave_de_api>` y `<nombre_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
+Donde `<clave_de_api>` y `<nombre_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
 
 3. Crear las carpetas `input` y `output`. Estas carpetas son necesarias para guardar los archivos de código fuente que se desean corregir y para guardar los resultados de las correcciones, respectivamente. Se pueden crear de la siguiente manera:
 
