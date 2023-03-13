@@ -63,8 +63,13 @@ class PyTA:
             text = THEORY.replace("<tema>",theme)
         output = self.prompt_and_save(text,filename,suffix,append)
         return output
-    
+        
     def interactive(self,last_choices = {}):
+        theme = ""
+        filename = ""
+        is_exercise = False
+        append = False
+        
         class_or_correct = self.input_text("¿Quieres crear clases o corregir ejercicios? (clases/corregir) ",last_choices.get('class_or_correct',''))
         if class_or_correct == "clases":
             theme = self.input_text("¿Qué tema quieres tratar? ",last_choices.get('theme',''))
