@@ -70,7 +70,7 @@ class PyTA:
         is_exercise = False
         append = False
         
-        class_or_correct = self.input_text("¿Quieres crear clases o corregir ejercicios? (clases/corregir) ",last_choices.get('class_or_correct',''))
+        class_or_correct = self.input_text("¿Quieres crear clases o corregir ejercicios? (clases/corregir/libre) ",last_choices.get('class_or_correct',''))
         if class_or_correct == "clases":
             theme = self.input_text("¿Qué tema quieres tratar? ",last_choices.get('theme',''))
             filename = self.input_text("¿Cómo quieres llamar al archivo? ",last_choices.get('filename',''))
@@ -87,6 +87,15 @@ class PyTA:
             self.create_classes(theme,filename,is_exercise,append)
         elif class_or_correct == "corregir":
             self.correct_files()
+        elif class_or_correct == "libre":
+            context = self.input_text("¿Quieres añadir contexto? (s/n) ",last_choices.get('context',''))
+            if context == "s":
+                context = self.input_text("El contexto actual es el siguiente:\n---------\n"+self.context+ "\n---------\nEscribe el nuevo contexto (presiona enter para mantener el anterior): ")
+                if context != "":
+                    self.context = context
+            text = self.input_text("Escribe lo que quieras: ")
+            filename = self.input_text("¿Cómo quieres llamar al archivo? ",last_choices.get('filename',''))
+            self.prompt_and_save(text,filename)
         else:
             print("Opción no válida")
             self.interactive(last_choices)
