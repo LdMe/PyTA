@@ -9,10 +9,11 @@ class PyTA:
     def __init__(self,context = CONTEXT):
         self.context = context
         self.api = Openai_api()
-    def get_response(self,text):
-        return self.api.get_response(self.context,text)
-    def prompt_and_save(self,text,filename,suffix="",append=False):
-        output = self.get_response(text)
+    def get_response(self,text,context=None):
+        context = context if context else self.context
+        return self.api.get_response(context,text)
+    def prompt_and_save(self,text,filename,suffix="",append=False,context=None):
+        output = self.get_response(text,context)
         print(output)
         self.save_output(filename, output,suffix,append)
     def save_output(self,filename, output,suffix="",append=False,markdown=True):
