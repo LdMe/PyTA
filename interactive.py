@@ -7,57 +7,73 @@ class Interactive:
             's': True,
             'n': False
         }
-
-    def interactive(self,last_choices = {}):
-        activities = {
+        self.activities = {
             '1': "Crear clases",
             '2': "Corregir ejercicios",
             '3': "Escribir libremente",
-            '4': "Salir"
+            '4': "Cambiar contexto",
+            '5': "Salir"
         }
-        functions = {
+        self.functions = {
             '1': self.create_classes,
             '2': self.correct_files,
             '3': self.free_prompt,
-            '4': exit
+            '4': self.change_context,
+            '5': exit
         }
+
+    def interactive(self,last_choices = {}):
         print("\nSoy PyTA, tu asistente de aprendizaje automático")
+        print(self.load_symbol_image("assets/pyta.md"))
         while True:
             
             print("\n-------------\n¿Qué quieres hacer?")
-            self.print_choices(activities)
-            option = input("Elige una opción: ")
-            if option in functions:
-                functions[option](last_choices)
-            else:
-                print("Opción no válida")
-        print("¡Hasta pronto!")
+            self.print_choices(self.activities)
+            try:
+                option = input("Elige una opción: ")
+                print("\n-------------\n")
+                if option in self.functions:
+                    self.functions[option](last_choices)
+                    print(last_choices)
+                else:
+                    print("Opción no válida")
+            except Exception as e:
+                print("Ocurrió un error: "+str(e))
+    
+    def change_context(self,choices):
+        context = self.pyta.context
+        print("El contexto actual es el siguiente:\n---------\n"+context+ "\n---------\nEscribe el nuevo contexto (presiona enter para mantener el anterior): ")
+        choices["context"] = self.input_text("¿Qué contexto quieres añadir? ",choices.get('context',''))
+        self.pyta.context = choices["context"]
 
-    
-
-    
-    
     def create_classes(self,choices):
         
         choices["theme"] = self.input_text("¿Qué tema quieres tratar? ",choices.get('theme',''))
-        choices["filename"] = self.input_text("¿Cómo quieres llamar al archivo? ",choices.get('filename',''))
         choices["is_exercise"] = self.translate_choice_to_bool(self.input_text("¿Es un ejercicio? (s/n) ",choices.get('is_exercise','')),self.boolean_choices)
-        choices["append"] = self.translate_choice_to_bool(self.input_text("¿Quieres añadirlo al final del archivo si este ya existe? (s/n) ",choices.get('append','')),self.boolean_choices)
+        self.name_file(choices)
         self.pyta.create_classes(choices["theme"],choices["filename"],choices["is_exercise"],choices["append"])
     
     def correct_files(self,choices):
         self.pyta.correct_files()
-    
+
     def free_prompt(self,choices):
-        if(self.translate_choice_to_bool(self.input_text("¿Quieres añadir contexto? (s/n) ","s"),self.boolean_choices)):
-            context = choices.get('context',None)
-            context = context if context != None else self.pyta.context
-            choices["context"] = self.input_text("El contexto actual es el siguiente:\n---------\n"+context+ "\n---------\nEscribe el nuevo contexto (presiona enter para mantener el anterior): ","")
-        choices["text"] = self.input_text("Escribe lo que quieras: ")
+        if "text" in choices:
+            print("El texto actual es el siguiente:\n---------\n"+choices["text"]+ "\n---------\nEscribe el nuevo texto (presiona enter para mantener el anterior): ")
+        else:
+            choices["text"] = ""
+        choices["text"] = self.input_text("Escribe lo que quieras: ",choices["text"])
+        self.name_file(choices)
+        self.pyta.prompt_and_save(choices["text"],choices["filename"],append=choices.get("append",False))
+        
+    def name_file(self,choices):
         choices["filename"] = self.input_text("¿Cómo quieres llamar al archivo? ",choices.get('filename',''))
         choices["append"] = self.translate_choice_to_bool(self.input_text("¿Quieres añadirlo al final del archivo si este ya existe? (s/n) ",choices.get('append','')),self.boolean_choices)
-        self.pyta.prompt_and_save(choices["text"],choices["filename"],append=choices.get("append",False),context=choices.get('context',None))
-        
+    
+    def load_symbol_image(self,filename="symbol.md"):
+        with open(filename,"r") as f:
+            symbol = f.read()
+        return symbol
+
 
     def print_choices(self,choices):
         for key, value in choices.items():

@@ -1,6 +1,37 @@
 # PyTA - Python Teaching Assistant
 
+                            /\
+                            / \
+                           /   \
+                          /     \
+                         /       \
+                         |        |
+                         ╭────────╮
+                         |╭──────╮|
+                     ╭────┤  ◕◕  ├────╮
+                ╭────┤    | ╰┬┬╯ |    ├────╮
+                │         | ╰┴┴╯ |         │
+                │         ╰──────╯         │
+                │     ──────╮  ╭──────     │
+             ╭──┴───╮     ──│  │──     ╭───┴──╮
+             │ │  │ │     ──│  │──     │ │  │ │
+             │      │     ──│  │──     │      │
+             │      │ ╰─────┴──┴─────╯ │      │
+             │      ╰──────────────────╯      │
+             ╰────────────────────────────────╯
+       
 PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de enseñanza. 
+
+## Índice
+
+- [Puesta en marcha](#puesta-en-marcha)
+- [Uso](#uso)
+  - [Crear clases](#crear-clases)
+  - [Corregir ejercicios](#corregir-ejercicios)
+  - [Escribir libremente](#escribir-libremente)
+  - [Cambiar contexto](#cambiar-contexto)
+  - [Salir](#salir)
+
 
 ## Puesta en marcha
 Para poder poner en marcha el programa PyTA, se deben seguir los siguientes pasos:
@@ -30,89 +61,72 @@ python3 main.py
 
 ```
 ----
-## La función interactive
+## Uso
 
-La función `interactive` permite al usuario crear clases o corregir ejercicios de forma interactiva, así como tomar decisiones sobre el nombre del archivo, si el archivo es un ejercicio y si se desea añadir contenido al final del archivo. Esta función se llama por defecto al ejecutar el archivo `main.py`.
+La ejecución del código anterior ejecutará una función interactiva que nos mostrará las opciones disponibles para el usuario. Las opciones escogidas se guardan para la siguiente iteración.  
+```shell
+-------------
+¿Qué quieres hacer?
+1: Crear clases
+2: Corregir ejercicios
+3: Escribir libremente
+4: Cambiar contexto
+5: Salir
+Elige una opción: 
 
-### Uso de la función interactive
+```
+### Crear clases
 
-Las opciones que puede escoger el usuario son las siguientes:
+La opción 1 permite al usuario crear clases de forma interactiva. El usuario debe ingresar el tema que desea tratar en la clase y el nombre del archivo que contendrá la clase. Luego, PyTA generará una clase con el contenido correspondiente al tema ingresado. El usuario puede elegir si la clase es un ejercicio o no, y si desea añadir el contenido de la clase al final del archivo existente o sustituirlo. El archivo con el contenido de la clase se guardará en la carpeta `output` con el nombre especificado por el usuario. Se puede cambiar la frase usada para crear la clase en el archivo `PyTA.py` modificando las constantes `THEORY` y `EXERCISES`.
+```shell
+-------------
 
-1. Para crear clases:
-- `¿Quieres crear clases o corregir ejercicios? (clases/corregir)`: el usuario debe ingresar "clases" .
-- `¿Qué tema quieres tratar?`: el usuario debe ingresar el tema que desea tratar en la clase.
-- `¿Cómo quieres llamar al archivo?`: el usuario debe ingresar el nombre que desea dar al archivo que contendrá la clase.
-- `¿Es un ejercicio? (s/n)`: el usuario debe indicar si la clase es un ejercicio o no ingresando "s" o "n".
-- `¿Quieres añadir al final del archivo? (s/n)`: el usuario debe indicar si desea añadir el contenido de la clase al final del archivo existente o sustituirlo ingresando "s" o "n".
-
-2. Para corregir ejercicios:
-- `¿Quieres crear clases o corregir ejercicios? (clases/corregir)`: el usuario debe ingresar "corregir" .
-- No se requiere ingresar información adicional.
-
-La opción de crear clases generará un archivo .md en la carpeta `output` con el contenido de la clase. La opción de corregir ejercicios generará un archivo por cada ejercicio que se encuentre en la carpeta `input` y lo guardará en la carpeta `output` con el mismo nombre y formato que el archivo de entrada.
-**Aviso: la correción de ejercicios no es muy precisa, pero puede servir como guía para corregir los ejercicios. Es conveniente que los ejercicios a corregir incluyan el enunciado en el comentario de la primera línea del archivo, ya que PyTA utilizará este enunciado como base para generar la respuesta.**
-
-En ambos casos, luego de realizar la acción correspondiente se le pregunta al usuario si desea hacer algo más ingresando "s" o "n". Si el usuario elige "s", se le muestra las opciones para la acción anterior y se le permite realizar una nueva acción. Si elige "n", la función finaliza.
-
-Además, la función permite la opción de recordar las últimas decisiones del usuario en un diccionario llamado "last_choices" para que en la siguiente interacción las opciones anteriores aparezcan como sugerencias al usuario. Para usar las opciones sugeridas, el usuario debe presionar la tecla "Enter" sin ingresar ningún valor.
-
-
-### Pasar opciones por defecto a la función interactive
-
-Si queres pasar opciones por defecto a la función `interactive`, se puede hacer de la siguiente manera:
-
-```python
-last_choices = {
-    'class_or_correct': 'clases',
-    'theme': 'tema_por_defecto',
-    'filename': 'archivo_por_defecto',
-    'is_exercise': 'n',
-    'append': 'n'
-}
-assitant = PyTA()
-assistant.interactive(last_choices)
+¿Qué tema quieres tratar?  introducción a la programación
+¿Es un ejercicio? (s/n)  n
+¿Cómo quieres llamar al archivo?  introduccion
+¿Quieres añadirlo al final del archivo si este ya existe? (s/n)  s
 ```
 
-De esta manera, el usuario puede definir opciones por defecto y reutilizarlas en diferentes ejecuciones de la función.
+### Corregir ejercicios
 
-Además, la función `create_classes` se puede llamar directamente para crear una clase de teoría o ejercicio sin tener que interactuar con el usuario:
+La opción 2 permite al usuario corregir ejercicios. El programa leerá todos los archivos de código fuente que se encuentren en la carpeta `input` y generará un archivo por cada ejercicio que se encuentre en la carpeta `output` con el mismo nombre y formato que el archivo de entrada. **Aviso: la correción de ejercicios no es muy precisa, pero puede servir como guía para corregir los ejercicios. Es conveniente que los ejercicios a corregir incluyan el enunciado en el comentario de la primera línea del archivo, ya que PyTA utilizará este enunciado como base para generar la respuesta**. Se puede cambiar la frase usada para corregir los ejercicios en el archivo `PyTA.py` modificando la constante `CORRECTION`.
 
-```python
-assistant.create_classes("decoradores", "decorators", is_exercise=False, append=False)
-``` 
+### Escribir libremente
 
-En este ejemplo, se crea una clase de teoría sobre decoradores con el nombre de archivo `decorators`. El archivo no se añadirá al final de un archivo existente, ya que `append=False`.
+La opción 3 permite al usuario escribir libremente en el contexto actual. El usuario puede escribir lo que desee y PyTA generará una respuesta a la consulta ingresada. El resultado de la consulta se guardará en el archivo con el nombre especificado por el usuario en la carpeta `output`.
+```shell
+-------------
+
+Escribe lo que quieras:  cuanto es 9 * 9?      
+¿Cómo quieres llamar al archivo?  multiplicacion
+¿Quieres añadirlo al final del archivo si este ya existe? (s/n)  s
+El resultado de 9 x 9 es: 
 
 
-----
+console.log(9 * 9); // 81
 
-## Cambiar el contexto y las frases por defecto
-
-El contexto se usa para preparar a PyTA para un uso específico. Por ejemplo, el contexto por defecto es "Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente.".  
-
-Sin embargo, es posible cambiar este contexto para adaptarlo a diferentes temas o usos.
-
-Para cambiar el contexto, basta con modificar la variable `CONTEXT` al inicio del código (`pyTA.py`). Por ejemplo:
-
-```python
-CONTEXT = "Eres un profesor del bootcamp de machine learning. Las respuestas deben ir en formato markdown y el código en el formato correspondiente."
+{'text': 'cuanto es 9 * 9?', 'filename': 'multiplicacion', 'append': True}
 ```
 
-Además, PyTA utiliza algunas frases por defecto para generar texto para la corrección de ejercicios y la creación de clases. Estas frases también pueden ser modificadas para adaptarse a diferentes temas o usos. En particular, se pueden modificar las siguientes variables:
+### Cambiar contexto
 
-- `THEORY`: frase para la creación de teoría.
-- `EXERCISES`: frase para la creación de ejercicios.
-- `CORRECT`: frase para la corrección de ejercicios.
+La opción 4 permite al usuario cambiar el contexto actual. El contexto se utiliza para poner en situación a PyTA y generar respuestas más precisas. El usuario puede ingresar el contexto que desee y PyTA generará una respuesta a la consulta ingresada. Para cambiar el contexto por defecto al iniciar la aplicación, se debe modificar el archivo `PyTA.py` modificando la constante `CONTEXT` por el contexto deseado.
+```shell
+-------------
 
-Por ejemplo, para modificar la frase para la creación de teoría en el contexto de machine learning:
-
-```python
-THEORY = "Explica detalladamente <tema> desde la perspectiva de machine learning. Muestra ejemplos de algoritmos y casos de uso."
+El contexto actual es el siguiente:
+---------
+Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente.
+---------
+Escribe el nuevo contexto (presiona enter para mantener el anterior): 
+¿Qué contexto quieres añadir?  Tu coche se ha estropeado y no tienes batería en el móvil para llamar a emergencias
+{'context': 'Tu coche se ha estropeado y no tienes batería en el móvil para llamar a emergencias'}
 ```
 
-En resumen, se pueden cambiar tanto el contexto como las frases por defecto de PyTA para adaptarlo a diferentes temas o usos simplemente modificando las variables correspondientes al inicio del código.
 
----
+### Salir
+
+La opción 5 permite al usuario salir de la aplicación. Al salir, PyTA mostrará por pantalla las opciones que se utilizaron en la última ejecución.
 
 ## Sugerencias de mejoras y colaboración
 

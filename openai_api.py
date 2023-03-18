@@ -13,14 +13,17 @@ class Openai_api:
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
     def get_response(self,context,text):
-        response = openai.ChatCompletion.create(
-            model=engine,
+        try:
+            response = openai.ChatCompletion.create(
+                model=engine,
+                
+                messages = [
+                    {'role':"system","content": context},
+                    {"role":"user","content": text}
+                ]
+                
+            )
             
-            messages = [
-                 {'role':"system","content": context},
-                 {"role":"user","content": text}
-            ]
-            
-        )
-        
-        return response["choices"][0]["message"]["content"]
+            return response["choices"][0]["message"]["content"]
+        except Exception as e:
+            return "Ups, algo salió mal.\n"+str(e)

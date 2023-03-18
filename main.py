@@ -1,8 +1,8 @@
-from pyTA import PyTA
+from interactive import Interactive
 
 def main():
-    pyta = PyTA()
-    pyta.interactive()
+    instance = Interactive()
+    instance.interactive()
 
 if __name__ == "__main__":
     main()
