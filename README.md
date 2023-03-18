@@ -49,7 +49,7 @@ Donde `<clave_de_api>` y `<nombre_de_la_organizacion>` deben ser reemplazados co
 
 3. Crear las carpetas `input` y `output`. Estas carpetas son necesarias para guardar los archivos de código fuente que se desean corregir y para guardar los resultados de las correcciones, respectivamente. Se pueden crear de la siguiente manera:
 
-```bash
+```
 mkdir input
 mkdir output
 ```
@@ -64,7 +64,7 @@ python3 main.py
 ## Uso
 
 La ejecución del código anterior ejecutará una función interactiva que nos mostrará las opciones disponibles para el usuario. Las opciones escogidas se guardan para la siguiente iteración.  
-```shell
+```
 -------------
 ¿Qué quieres hacer?
 1: Crear clases
@@ -78,7 +78,7 @@ Elige una opción:
 ### Crear clases
 
 La opción 1 permite al usuario crear clases de forma interactiva. El usuario debe ingresar el tema que desea tratar en la clase y el nombre del archivo que contendrá la clase. Luego, PyTA generará una clase con el contenido correspondiente al tema ingresado. El usuario puede elegir si la clase es un ejercicio o no, y si desea añadir el contenido de la clase al final del archivo existente o sustituirlo. El archivo con el contenido de la clase se guardará en la carpeta `output` con el nombre especificado por el usuario. Se puede cambiar la frase usada para crear la clase en el archivo `PyTA.py` modificando las constantes `THEORY` y `EXERCISES`.
-```shell
+```
 -------------
 
 ¿Qué tema quieres tratar?  introducción a la programación
@@ -94,7 +94,7 @@ La opción 2 permite al usuario corregir ejercicios. El programa leerá todos lo
 ### Escribir libremente
 
 La opción 3 permite al usuario escribir libremente en el contexto actual. El usuario puede escribir lo que desee y PyTA generará una respuesta a la consulta ingresada. El resultado de la consulta se guardará en el archivo con el nombre especificado por el usuario en la carpeta `output`.
-```shell
+```
 -------------
 
 Escribe lo que quieras:  cuanto es 9 * 9?      
@@ -111,7 +111,7 @@ console.log(9 * 9); // 81
 ### Cambiar contexto
 
 La opción 4 permite al usuario cambiar el contexto actual. El contexto se utiliza para poner en situación a PyTA y generar respuestas más precisas. El usuario puede ingresar el contexto que desee y PyTA generará una respuesta a la consulta ingresada. Para cambiar el contexto por defecto al iniciar la aplicación, se debe modificar el archivo `PyTA.py` modificando la constante `CONTEXT` por el contexto deseado.
-```shell
+```
 -------------
 
 El contexto actual es el siguiente:
