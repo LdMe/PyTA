@@ -43,10 +43,13 @@ Para poder poner en marcha el programa PyTA, se deben seguir los siguientes paso
 
 ```
 OPENAI_API_KEY=<clave_de_api>
-OPENAI_ORGANIZATION=<nombre_de_la_organizacion>
+OPENAI_ORGANIZATION=<ID_de_la_organizacion>
 ```
 
-Donde `<clave_de_api>` y `<nombre_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
+Donde `<clave_de_api>` y `<ID_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
+
+- [ID de la organización](https://platform.openai.com/account/org-settings)
+- [Clave de API](https://platform.openai.com/account/api-keys)
 
 3. Crear las carpetas `input` y `output`. Estas carpetas son necesarias para guardar los archivos de código fuente que se desean corregir y para guardar los resultados de las correcciones, respectivamente. Se pueden crear de la siguiente manera:
 
