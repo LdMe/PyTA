@@ -31,6 +31,7 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
   - [Escribir libremente](#escribir-libremente)
   - [Cambiar contexto](#cambiar-contexto)
   - [Salir](#salir)
+ - [Sugerencias de mejora / colaboración](#sugerencias-de-mejoras-y-colaboración)
 
 
 ## Puesta en marcha
