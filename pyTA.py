@@ -1,4 +1,5 @@
 import os
+import re
 from openai_api import Openai_api
 
 CONTEXT = "Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente."
@@ -19,6 +20,7 @@ class PyTA:
         output = self.get_response(text)
         print(output)
         self.save_output(filename, output,suffix,append)
+        return output
 
     def save_output(self,filename, output,suffix="",append=False,markdown=True):
         name_array = self.separate_extension(filename)
@@ -34,7 +36,10 @@ class PyTA:
         else:
             with open(output_filename, "w") as file:
                 file.write(output)
-    
+    def save_unsolved_exercises(self,filename, output,append=False):
+        output_solved = re.sub(r'\`{3}([^\`]*\`{3})',"",output)
+        self.save_output(filename, output_solved,suffix="_sin_resolver", append=append, markdown=True)
+
     def separate_extension(self,filename):
         return os.path.splitext(filename)
     
@@ -67,5 +72,7 @@ class PyTA:
         else:
             text = THEORY.replace("<tema>",theme)
         output = self.prompt_and_save(text,filename,suffix,append)
+        if is_exercise:
+            self.save_unsolved_exercises(filename, output,append)
         return output
       
