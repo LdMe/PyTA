@@ -41,16 +41,42 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 
 ---
 
+Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en un archivo `.env` en la raíz del proyecto. El archivo `.env` debe tener el siguiente formato:
+
+```
+OPENAI_API_KEY=<clave_de_api>
+OPENAI_ORGANIZATION=<ID_de_la_organizacion>
+```
+
+Donde `<clave_de_api>` y `<ID_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
+
+Podemos usar el archivo `.env.example` como plantilla.
+- [ID de la organización](https://platform.openai.com/account/org-settings)
+- [Clave de API](https://platform.openai.com/account/api-keys)
+
+---
+
 ### Docker
 
 Si tenemos Docker instalado, podemos crear y ejecutar PyTA con los siguientes comandos:
 
+Crear o actualizar la imagen:
+
 ```bash
 docker build -t pyta . // Crear la imagen
-docker run -v $(pwd):/app -it pyta // Ejecutar la imagen
-
 ```
-Los archivos creados por PyTA no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
+Ejecutar la imagen:
+
+```bash
+docker run --rm -v $(pwd):/app -it pyta  // Ejecutar la imagen
+```
+También se puede ejecutar en linux y mac con el siguiente comando:
+
+```bash
+./run.sh
+```
+
+Los archivos creados por PyTA mediante Docker no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
 
 ```bash
 sudo chmod -R 777 output/ 
@@ -62,28 +88,17 @@ sudo chmod -R 777 output/
 ### Instalación manual
 Para poder poner en marcha el programa PyTA, se deben seguir los siguientes pasos:
 
-1. Instalar las librerías necesarias. Para esto, se puede usar el gestor de paquetes `pip` y ejecutar el siguiente comando: `pip install -r requirements.txt`. Este archivo `requirements.txt` especifica las librerías y sus versiones necesarias para poder utilizar PyTA.
+1. Tener instalado Python 3.10 o superior.
 
-2. Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en un archivo .env en la raíz del proyecto. El archivo .env debe tener el siguiente formato:
+2. Instalar las librerías necesarias. Para esto, se puede usar el gestor de paquetes `pip` y ejecutar el siguiente comando: 
 
-```
-OPENAI_API_KEY=<clave_de_api>
-OPENAI_ORGANIZATION=<ID_de_la_organizacion>
-```
-
-Donde `<clave_de_api>` y `<ID_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
-
-- [ID de la organización](https://platform.openai.com/account/org-settings)
-- [Clave de API](https://platform.openai.com/account/api-keys)
-
-3. Crear las carpetas `input` y `output`. Estas carpetas son necesarias para guardar los archivos de código fuente que se desean corregir y para guardar los resultados de las correcciones, respectivamente. Se pueden crear de la siguiente manera:
-
-```
-mkdir input
-mkdir output
+```bash
+pip install -r requirements.txt
 ```
 
-Una vez realizados estos tres pasos, PyTA está listo para ser utilizado. Se puede ejecutar la opción interactiva de PyTA con el siguiente comando:
+ Este archivo `requirements.txt` especifica las librerías y sus versiones necesarias para poder utilizar PyTA.
+
+Una vez realizados estos pasos, PyTA está listo para ser utilizado. Se puede ejecutar la opción interactiva de PyTA con el siguiente comando:
 
 ```
 python3 main.py
