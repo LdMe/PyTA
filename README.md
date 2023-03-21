@@ -25,6 +25,8 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 ## Índice
 
 - [Puesta en marcha](#puesta-en-marcha)
+  - [Docker](#docker)
+  - [Instalación manual](#instalación-manual)
 - [Uso](#uso)
   - [Crear clases](#crear-clases)
   - [Corregir ejercicios](#corregir-ejercicios)
@@ -33,8 +35,31 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
   - [Salir](#salir)
  - [Sugerencias de mejora / colaboración](#sugerencias-de-mejoras-y-colaboración)
 
+---
 
 ## Puesta en marcha
+
+---
+
+### Docker
+
+Si tenemos Docker instalado, podemos crear y ejecutar PyTA con los siguientes comandos:
+
+```bash
+docker build -t pyta . // Crear la imagen
+docker run -v $(pwd):/app -it pyta // Ejecutar la imagen
+
+```
+Los archivos creados por PyTA no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
+
+```bash
+sudo chmod -R 777 output/ 
+
+```
+
+---
+
+### Instalación manual
 Para poder poner en marcha el programa PyTA, se deben seguir los siguientes pasos:
 
 1. Instalar las librerías necesarias. Para esto, se puede usar el gestor de paquetes `pip` y ejecutar el siguiente comando: `pip install -r requirements.txt`. Este archivo `requirements.txt` especifica las librerías y sus versiones necesarias para poder utilizar PyTA.
@@ -66,6 +91,7 @@ python3 main.py
 ```
 ----
 ## Uso
+---
 
 La ejecución del código anterior ejecutará una función interactiva que nos mostrará las opciones disponibles para el usuario. Las opciones escogidas se guardan para la siguiente iteración.  
 ```
@@ -90,10 +116,13 @@ La opción 1 permite al usuario crear clases de forma interactiva. El usuario de
 ¿Cómo quieres llamar al archivo?  introduccion
 ¿Quieres añadirlo al final del archivo si este ya existe? (s/n)  s
 ```
+---
 
 ### Corregir ejercicios
 
 La opción 2 permite al usuario corregir ejercicios. El programa leerá todos los archivos de código fuente que se encuentren en la carpeta `input` y generará un archivo por cada ejercicio que se encuentre en la carpeta `output` con el mismo nombre y formato que el archivo de entrada. **Aviso: la correción de ejercicios no es muy precisa, pero puede servir como guía para corregir los ejercicios. Es conveniente que los ejercicios a corregir incluyan el enunciado en el comentario de la primera línea del archivo, ya que PyTA utilizará este enunciado como base para generar la respuesta**. Se puede cambiar la frase usada para corregir los ejercicios en el archivo `PyTA.py` modificando la constante `CORRECTION`.
+
+---
 
 ### Escribir libremente
 
@@ -112,6 +141,8 @@ console.log(9 * 9); // 81
 {'text': 'cuanto es 9 * 9?', 'filename': 'multiplicacion', 'append': True}
 ```
 
+---
+
 ### Cambiar contexto
 
 La opción 4 permite al usuario cambiar el contexto actual. El contexto se utiliza para poner en situación a PyTA y generar respuestas más precisas. El usuario puede ingresar el contexto que desee y PyTA generará una respuesta a la consulta ingresada. Para cambiar el contexto por defecto al iniciar la aplicación, se debe modificar el archivo `PyTA.py` modificando la constante `CONTEXT` por el contexto deseado.
@@ -127,11 +158,15 @@ Escribe el nuevo contexto (presiona enter para mantener el anterior):
 {'context': 'Tu coche se ha estropeado y no tienes batería en el móvil para llamar a emergencias'}
 ```
 
+---
 
 ### Salir
 
 La opción 5 permite al usuario salir de la aplicación. Al salir, PyTA mostrará por pantalla las opciones que se utilizaron en la última ejecución.
 
+---
+
 ## Sugerencias de mejoras y colaboración
+---
 
 Si tienes alguna sugerencia de mejoras o quieres colaborar con el proyecto, puedes abrir un issue en el repositorio de GitHub. Este proyecto no está hecho con ambiciones comerciales, el objetivo es que sea una herramienta útil para la comunidad educativa.
