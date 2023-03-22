@@ -41,7 +41,6 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 
 ## Puesta en marcha
 
----
 ### .env
 
 El archivo `.env` contiene las credenciales de OpenAI y los textos por defecto que usa PyTA.
@@ -143,7 +142,7 @@ python3 main.py
 ```
 ----
 ## Uso
----
+
 
 La ejecución del código anterior ejecutará una función interactiva que nos mostrará las opciones disponibles para el usuario. Las opciones escogidas se guardan para la siguiente iteración.  
 ```
@@ -219,6 +218,6 @@ La opción 5 permite al usuario salir de la aplicación. Al salir, PyTA mostrar�
 ---
 
 ## Sugerencias de mejoras y colaboración
----
+
 
 Si tienes alguna sugerencia de mejoras o quieres colaborar con el proyecto, puedes abrir un issue en el repositorio de GitHub. Este proyecto no está hecho con ambiciones comerciales, el objetivo es que sea una herramienta útil para la comunidad educativa.
