@@ -10,7 +10,7 @@ if [ -n "$BASH_VERSION" ]; then
     
     echo "docker run --rm -v $(pwd):/app -it pyta" > run.sh
     # add prune.sh execution to run.sh
-    echo ./prune.sh >> run.sh
+    echo $(pwd)/prune.sh >> run.sh
 
     chmod +x run.sh
 
@@ -29,7 +29,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     # create run.sh file and add docker run --rm -v <current_dir>:/app -it pyta
     echo "docker run --rm -v $(pwd):/app -it pyta" > run.sh
     # add prune.sh execution to run.sh
-    echo ./prune.sh >> run.sh
+    echo $(pwd)/prune.sh >> run.sh
 
     chmod +x run.sh
 
