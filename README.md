@@ -94,32 +94,31 @@ Si tenemos Docker instalado, podemos crear y ejecutar PyTA con los siguientes co
   ```bash
   pyta
   ```
-  - Si se cierra la terminal sin salir de PyTA, pueden quedar contenedores en marcha. Para eliminarlos, se puede ejecutar el siguiente comando:
-  ```bash
-  ./prune.sh
-  ```
-
-  - Los archivos creados por PyTA mediante Docker no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
-
-  ```bash
-  sudo chmod -R 777 output/<nombre_del_archivo_con_extension> 
-
-  ```
----
 
 - #### Manual
 
-  Crear o actualizar la imagen:
+  - Crear o actualizar la imagen:
 
   ```bash
   docker build -t pyta . // Crear la imagen
   ```
-  Ejecutar la imagen:
+  - Ejecutar la imagen:
 
   ```bash
   docker run --rm -v <directorio_de_PyTA>:/app -it pyta  // Ejecutar la imagen
   ```
 
+Si se cierra la terminal sin salir de PyTA, pueden quedar contenedores en marcha. Para eliminarlos, se puede ejecutar el siguiente comando:
+```bash
+./prune.sh
+```
+
+Los archivos creados por PyTA mediante Docker no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
+
+```bash
+sudo chmod -R 777 output/<nombre_del_archivo_con_extension> 
+
+```
 
 ---
 
