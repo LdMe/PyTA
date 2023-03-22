@@ -26,7 +26,9 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 
 - [Puesta en marcha](#puesta-en-marcha)
   - [Docker](#docker)
-  - [Instalación manual](#instalación-manual)
+    - [Script](#script)
+    - [Manual](#manual)
+  - [Instalación con Python](#instalación-con-python)
 - [Uso](#uso)
   - [Crear clases](#crear-clases)
   - [Corregir ejercicios](#corregir-ejercicios)
@@ -40,17 +42,33 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 ## Puesta en marcha
 
 ---
+### .env
 
-Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en un archivo `.env` en la raíz del proyecto. El archivo `.env` debe tener el siguiente formato:
+El archivo `.env` contiene las credenciales de OpenAI y los textos por defecto que usa PyTA.
+Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en el archivo `.env` en la raíz del proyecto. El archivo `.env` debe tener el siguiente formato:
 
 ```
 OPENAI_API_KEY=<clave_de_api>
 OPENAI_ORGANIZATION=<ID_de_la_organizacion>
+CONTEXT=<contexto>
+THEORY=<teoria>
+EXERCISES=<ejercicios>
+CORRECTION=<correciones>
+
 ```
+Filas:
+  - `<clave_de_api>`: Clave de API de OpenAI.
+  - `<ID_de_la_organizacion>`: ID de la organización de OpenAI.
+  - `<contexto>`: Texto por defecto que se usa para el contexto.
+  - `<teoria>`: Texto por defecto que se usa para la teoría. Pyta reemplazará la palabra clave `<tema>` por el tema de la clase.
+  - `<ejercicios>`: Texto por defecto que se usa para los ejercicios. Pyta reemplazará la palabra clave `<tema>` por el tema de la clase.
+  - `<correciones>`: Texto por defecto que se usa para las correcciones. Este se puede reemplazar para reaccionar de otra manera a la lectura de archivos (mejorar código, etc.).
 
-Donde `<clave_de_api>` y `<ID_de_la_organizacion>` deben ser reemplazados con las credenciales correspondientes.
 
-Podemos usar el archivo `.env.example` como plantilla.
+
+Podemos usar el archivo [.env.example](.env.example) como plantilla.
+
+
 - [ID de la organización](https://platform.openai.com/account/org-settings)
 - [Clave de API](https://platform.openai.com/account/api-keys)
 
@@ -60,32 +78,52 @@ Podemos usar el archivo `.env.example` como plantilla.
 
 Si tenemos Docker instalado, podemos crear y ejecutar PyTA con los siguientes comandos:
 
-Crear o actualizar la imagen:
+- #### Script
 
-```bash
-docker build -t pyta . // Crear la imagen
-```
-Ejecutar la imagen:
+  - Se puede *instalar* en **linux** y **mac** con el siguiente comando:
+  ```bash
+  ./install.sh
+  ```
+  Este comando **creará un alias** para ejecutar PyTA con el comando `pyta` desde cualquier directorio. Los archivos creados seguirán guardándose en el directorio de PyTA.
 
-```bash
-docker run --rm -v $(pwd):/app -it pyta  // Ejecutar la imagen
-```
-También se puede ejecutar en linux y mac con el siguiente comando:
+  - Para desinstalar PyTA, se puede ejecutar el siguiente comando:
+  ```bash
+  ./uninstall.sh
+  ```
+  - Para ejecutar PyTA, se puede usar el siguiente comando:
+  ```bash
+  pyta
+  ```
+  - Si se cierra la terminal sin salir de PyTA, pueden quedar contenedores en marcha. Para eliminarlos, se puede ejecutar el siguiente comando:
+  ```bash
+  ./prune.sh
+  ```
 
-```bash
-./run.sh
-```
+  - Los archivos creados por PyTA mediante Docker no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
 
-Los archivos creados por PyTA mediante Docker no se podrán modificar directamente, pero se pueden guardar con otro nombre o se puede recuperar el permiso de escritura con el siguiente comando:
+  ```bash
+  sudo chmod -R 777 output/<nombre_del_archivo_con_extension> 
 
-```bash
-sudo chmod -R 777 output/ 
+  ```
+---
 
-```
+- #### Manual
+
+  Crear o actualizar la imagen:
+
+  ```bash
+  docker build -t pyta . // Crear la imagen
+  ```
+  Ejecutar la imagen:
+
+  ```bash
+  docker run --rm -v <directorio_de_PyTA>:/app -it pyta  // Ejecutar la imagen
+  ```
+
 
 ---
 
-### Instalación manual
+### Instalación con Python
 Para poder poner en marcha el programa PyTA, se deben seguir los siguientes pasos:
 
 1. Tener instalado Python 3.10 o superior.

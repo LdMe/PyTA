@@ -1,11 +1,12 @@
 import os
 import re
 from openai_api import Openai_api
+import dotenv
 
-CONTEXT = "Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente."
-THEORY = "Explica detalladamente <tema>. Muestra ejemplos de código y casos de uso."
-EXERCISES = "Crea ejercicios sobre <tema>. Los ejercicios deben ser sencillos y se deben presentar como una solución a un problema real."
-CORRECTION = "Teniendo en cuenta el enunciado, corrige los errores del código, mostrando solo los errores y explicando cómo resolver cada uno de ellos. Si la función no hace lo que se pide, propón una alternativa.\n"
+CONTEXT =  dotenv.get_key(".env","CONTEXT") if dotenv.get_key(".env","CONTEXT") else "Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente."
+THEORY = dotenv.get_key(".env","THEORY") if dotenv.get_key(".env","THEORY") else "Explica detalladamente <tema>. Muestra ejemplos de código y casos de uso."
+EXERCISES = dotenv.get_key(".env","EXERCISES") if dotenv.get_key(".env","EXERCISES") else "Crea ejercicios sobre <tema>. Los ejercicios deben ser sencillos y se deben presentar como una solución a un problema real."
+CORRECTION = dotenv.get_key(".env","CORRECTION") if dotenv.get_key(".env","CORRECTION") else "Teniendo en cuenta el enunciado, corrige los errores del código, mostrando solo los errores y explicando cómo resolver cada uno de ellos. Si la función no hace lo que se pide, propón una alternativa.\n"
 
 
 class PyTA:
@@ -42,14 +43,6 @@ class PyTA:
 
     def separate_extension(self,filename):
         return os.path.splitext(filename)
-    
-    def input_text(self,prompt,last_choice=""):
-        if last_choice != "":
-            prompt += "[{}]: ".format(last_choice)
-        text = input(prompt + " ")
-        if text == "":
-            text = last_choice
-        return text
     
     def read_file(self,filename):
         with open("input/"+filename, "r") as file:
