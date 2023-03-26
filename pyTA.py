@@ -31,12 +31,13 @@ class PyTA:
             extension = ".md"
         output_filename = "output/" + name + suffix+ extension
         if append:
-            output = "\n" + output
-            with open(output_filename, "a") as file:
-                file.write(output)
+            option="a"
         else:
-            with open(output_filename, "w") as file:
-                file.write(output)
+            option="w"
+        with open(output_filename, option) as file:
+            file.write(output)
+            file.write("\n\n")
+            
     def save_unsolved_exercises(self,filename, output,append=False):
         output_solved = re.sub(r'\`{3}([^\`]*\`{3})',"",output)
         self.save_output(filename, output_solved,suffix="_sin_resolver", append=append, markdown=True)
@@ -50,9 +51,13 @@ class PyTA:
     def ls(self,ruta = '.'):
         return os.listdir(ruta)
     
-    def correct_files(self,markdown=True):
+    def correct_files(self,markdown=False):
         for filename in self.ls("input"):
+            if filename == ".gitignore":
+                continue
             text = self.read_file(filename)
+            if text.strip() == "":
+                continue
             text = CORRECTION + text
             output = self.get_response(text)
             print(output)

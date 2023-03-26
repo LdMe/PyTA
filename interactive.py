@@ -30,7 +30,7 @@ class Interactive:
         self.choices = {
             "theme": "",
             "filename": "",
-            "is_exercise": True,
+            "is_exercise": False,
             "append": True,
             "text": "",
             "context": ""
