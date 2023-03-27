@@ -16,7 +16,8 @@ class PyTA:
 
     def get_response(self,text):
         return self.api.get_response(self.context,text)
-    
+    def get_response_multi(self,messages):
+        return self.api.get_response_multi(messages)
     def prompt_and_save(self,text,filename,suffix="",append=False):
         output = self.get_response(text)
         print(output)

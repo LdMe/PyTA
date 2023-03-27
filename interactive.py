@@ -1,5 +1,7 @@
 from pyTA import PyTA
 import traceback
+from chatbot import Chat
+
 class Interactive:
     def __init__(self,pyta=PyTA()):
         self.pyta = pyta
@@ -18,14 +20,16 @@ class Interactive:
             '2': "Corregir ejercicios",
             '3': "Escribir libremente",
             '4': "Cambiar contexto",
-            '5': "Salir"
+            '5': "Chatbot",
+            '6': "Salir"
         }
         self.functions = {
             '1': self.create_classes,
             '2': self.correct_files,
             '3': self.free_prompt,
             '4': self.change_context,
-            '5': exit,
+            '5': self.chatbot,
+            '6': exit,
         }
         self.choices = {
             "theme": "",
@@ -48,7 +52,7 @@ class Interactive:
                 option = input("Elige una opción: ")
                 print("\n-------------\n")
                 if option in self.functions:
-                    if option == '5':
+                    if self.activities[option] == "Salir":
                         print(self.choices)
                         exit()
                     self.functions[option]()
@@ -77,6 +81,26 @@ class Interactive:
             return False
         self.choices[choice] = result
         return True
+    
+    def chatbot(self):
+        if not self.name_file(): return
+        chat = Chat(self.choices["filename"])
+        while True:
+            try:
+                text = input("Escribe algo: ")
+                if text in self.exit_choices:
+                    return
+                if text =="/save":
+                    chat.save_as_md()
+                    continue
+                chat.add_message("user",text)
+                response = self.pyta.get_response_multi(chat.chat)
+                print("\n--\n"+response)
+                chat.add_message("assistant",response)
+                chat.save_chat()
+                print(chat.count_words())
+            except Exception as e:
+                print(traceback.format_exc())
 
     def correct_files(self):
         self.pyta.correct_files()
