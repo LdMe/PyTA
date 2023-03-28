@@ -29,14 +29,11 @@ class Openai_api:
             return "Ups, algo salió mal.\n"+str(e)
         
     def get_response_multi(self,messages):
-        try:
-            response = openai.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
                 model=engine,
                 
                 messages = messages
                 
             )
             
-            return response["choices"][0]["message"]["content"]
-        except Exception as e:
-            return "Ups, algo salió mal.\n"+str(e)
+        return response["choices"][0]["message"]["content"]

@@ -85,13 +85,15 @@ class Interactive:
     def chatbot(self):
         if not self.name_file(): return
         chat = Chat(self.choices["filename"])
+        if not chat.get_last_message_system():
+            chat.add_message("system",self.pyta.context)
         while True:
             try:
                 text = input("Escribe algo: ")
                 if text in self.exit_choices:
                     return
                 if text =="/save":
-                    chat.save_as_md()
+                    chat.save_as_md(only_responses=True)
                     continue
                 chat.add_message("user",text)
                 response = self.pyta.get_response_multi(chat.chat)

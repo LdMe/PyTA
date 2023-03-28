@@ -28,10 +28,12 @@ class Chat:
     def save_chat(self):
         with open("chat/"+self.chat_file+".json", "w") as file:
             json.dump(self.chat,file)
-    def save_as_md(self):
+    def save_as_md(self,only_responses=False):
         with open("output/"+self.chat_file+".md", "w") as file:
             for message in self.chat:
-                file.write(f"**{message['role']}**: {message['content']}\n\n")
+                if only_responses and message["role"] != "assistant":
+                    continue
+                file.write(f"{message['content']}\n---\n\n")
 
     def count_words(self):
         words = 0
