@@ -330,16 +330,12 @@ function createNavbarLinks(){
 
     homeLink.innerHTML = '<a href="/">Inicio</a>';
     
-    saveLink.innerHTML = '<a href="#" id="save">Guardar</a>';
-    saveLink.addEventListener('click', () => saveChat());
-
     downloadLink.innerHTML = '<a href="#" id="download">Descargar</a>';
     downloadLink.addEventListener('click', () => downloadChat());
 
     navbarList.innerHTML = '';
     navbarList.appendChild(homeLink);
     navbarList.appendChild(wordCountLink);
-    navbarList.appendChild(saveLink);
     navbarList.appendChild(downloadLink);
 
 }

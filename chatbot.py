@@ -85,7 +85,9 @@ class Chat:
     def add_message(self,role,message):
         if not message or message == "":
             return 
-        if message == self.get_last_message()["content"] and role == self.get_last_role():
+        last_message = self.get_last_message()
+
+        if len(last_message)>0 and message == self.get_last_message()["content"] and role == self.get_last_role():
             return
         self.chat.append({
             "role": role,

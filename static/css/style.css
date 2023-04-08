@@ -45,7 +45,6 @@
 }
 .chat-link {
     display: block;
-    margin: 10px 0;
 }
 pre {
     border-radius: 15px ;
@@ -76,14 +75,12 @@ pre {
   }
   
  #nav li {
-    margin: 0 10px; /* márgenes a la izquierda y derecha para separar los elementos */
+    margin: 10px 10px; /* márgenes a la izquierda y derecha para separar los elementos */
   }
   
 #nav  a,#nav span {
     color: white; /* color del texto de los links */
     text-decoration: none; /* elimina la subraya del texto de los links */
-    padding: 10px; /* espacio interno de los links */
-   
     font-weight: bold; /* establece el peso de la fuente en negrita */
   }
 #nav a {
@@ -96,26 +93,39 @@ pre {
   }
 
   #lista-links {
-    list-style: none; /* elimina las viñetas de la lista */
-    margin: 0; /* elimina los márgenes predeterminados de la lista */
-    padding: 0; /* elimina los espacios predeterminados dentro y fuera de la lista */
-  }
-  
-  #lista-links li {
-    display: flex; /* convierte los elementos en línea */
-    align-items: center; /* centra verticalmente los elementos */
-    margin-bottom: 10px; /* espacio inferior para separar los elementos */
-  }
-  
-  #lista-links li a {
-    color: #333; /* color del texto de los links */
-    text-decoration: none; /* elimina la subraya del texto de los links */
-    padding-right: 10px; /* espacio interno a la derecha para separar los elementos */
-  }
-  #lista-links li a:hover {
-    color: #255cd2; /* color del texto de los links al pasar por encima */
-    background-color: #DCF8C6;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+#lista-links li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin-bottom: 10px;
+    width: 80%;
+    padding: 10px ,0;
+    background-color: #efefef;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+#lista-links li a:first-of-type {
+    width: 100%;
+    text-align: center;
+    margin-left : 0;
+}
+#lista-links li:hover {
+    background-color: #ddd;
+}
+
+#lista-links li a {
+    text-decoration: none;
+    color: #333;
+    margin-right: 5px;
+    padding: 10px 0;
+}
   
   .btn-borrar {
     background-color: transparent; /* color transparente del fondo del botón */
@@ -159,3 +169,5 @@ pre {
     background-color: transparent;
     border: none;
   }
+
+  
