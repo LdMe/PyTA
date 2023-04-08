@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+PyTA 
+{% endblock %}
+
+{% block content %}
+	<h2>Conversaciones:</h2>
+	<ul id="lista-links">
+	{% for  conversation in conversations %}
+		<li><a class="chat-link" href="{{ url_for('chat', chat_name=conversation) }}"> {{ conversation }}</a> <button class="btn-borrar"><i class="fas fa-trash-alt"></i></button></li>
+	{% endfor %}
+	</ul>
+	<form action="/new_chat" method="post">
+        <label for="chat_name">Nueva conversación:</label>
+        <input type="text" name="chat_name" id="chat_name" placeholder="nombre">
+        <input type="submit" value="Crear">
+    </form>
+{% endblock %}
