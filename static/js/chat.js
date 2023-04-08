@@ -84,11 +84,18 @@ function updateMessageForm(position) {
     
 }
 // update message in chat
-function updateMessage(position, message, role=null) {
+async function updateMessage(position, message, role=null) {
     chats[position].content = message;
     if (role != null) {
         chats[position].role = role;
     }
+    await fetch('/api/chats/' + getChatName()+'/update/'+position, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(chats[position])
+    });
     render(reload=true,scrollPosition=position);
 }
 
@@ -282,10 +289,17 @@ function createNewMessageHtml() {
         section.classList.add(select.value);
     });
     const sendButton = document.createElement('button');
+    const resendButton = document.createElement('button');
     sendButton.type = 'submit';
     sendButton.classList.add('btn');
+    resendButton.classList.add('btn');
     sendButton.innerHTML = 'Enviar';
+    resendButton.innerHTML = 'Reenviar';
+    resendButton.addEventListener('click', (event) => {
+        send();
+    });
     form.appendChild(sendButton);
+    form.appendChild(resendButton);
     section.appendChild(form);
     return section;
 }

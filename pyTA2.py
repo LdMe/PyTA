@@ -58,6 +58,8 @@ class Pyta:
         self.chatbot.add_message(role=role,message=message)
     def delete_message(self,chat_name,message_id):
         self.chatbot.delete_message(chat_name,message_id)
+    def update_message(self,chat_name,message_id,message,role=None):
+        self.chatbot.update_message(chat_name,message_id,message,role)
     def add_response(self,response):
         self.chatbot.add_message(role="assistant",message=response)
     def create_exercise(self,topic):

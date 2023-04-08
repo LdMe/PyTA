@@ -61,6 +61,11 @@ class Chat:
     def delete_message(self,chat_name,position):
         self.chat.pop(position)
         self.save_chat(chat_file=chat_name)
+    def update_message(self,chat_name,position,message,role):
+        self.chat[position]["content"] = message
+        if role:
+            self.chat[position]["role"] = role
+        self.save_chat(chat_file=chat_name)
     def count_words(self):
         words = 0
         for message in self.chat:
@@ -80,6 +85,8 @@ class Chat:
     def add_message(self,role,message):
         if not message or message == "":
             return 
+        if message == self.get_last_message()["content"] and role == self.get_last_role():
+            return
         self.chat.append({
             "role": role,
             "content": message
