@@ -12,28 +12,69 @@ import json
 import os
 
 class Chat:
-    def __init__(self,chat_file="chat"):
+    def __init__(self,chat_file="chat",save=True):
         self.chat_file = chat_file
-        
-        self.load_chat()
+        self.chat = []
+        self.save = save
+        if  self.save:
+            self.load_chat_file()
+    def clear(self):
+        self.chat = []
+        self.save_chat()
 
-    def load_chat(self):
-        if not os.path.exists("chat/"+self.chat_file+".json"):
+    def load_chat(self,chat):
+        self.chat = chat
+
+    def load_chat_file(self,chat_file=None):
+        filename = chat_file if chat_file else self.chat_file
+        filename = filename + ".json"
+        if not os.path.exists("chat/"+filename):
             self.chat = []
             self.save_chat()
             return
-        with open("chat/"+self.chat_file+".json", "r") as file:
+        with open("chat/"+ filename, "r") as file:
             self.chat = json.load(file)
 
-    def save_chat(self):
-        with open("chat/"+self.chat_file+".json", "w") as file:
+    def save_chat(self,chat_file=None):
+        filename = chat_file if chat_file else self.chat_file
+        if not self.save:
+            return
+        with open("chat/"+filename+".json", "w") as file:
             json.dump(self.chat,file)
-    def save_as_md(self,only_responses=False):
-        with open("output/"+self.chat_file+".md", "w") as file:
+            
+    def get_chat_names(self):
+        return [chat.split(".")[0] for chat in os.listdir("chat") if not chat.startswith(".git") and chat.endswith(".json")]
+    
+    def save_as_format(self,format=None,only_responses=False,filename=None):
+        filenameToSave = filename if filename else self.chat_file
+        if not format:
+            format = filenameToSave.split(".")[-1]
+        with open("output/"+filenameToSave+"."+format, "w") as file:
             for message in self.chat:
                 if only_responses and message["role"] != "assistant":
                     continue
-                file.write(f"{message['content']}\n---\n\n")
+                file.write(f"{message['content']}\n\n---\n\n")
+    def save_as_md(self,only_responses=False,filename=None):
+        self.save_as_format(format="md",only_responses=only_responses,filename=filename)
+    def load_message_from_file(self,message_file):
+        try:
+            filename = "input/"+message_file
+            # if file does not have extension then add .md
+            if "." not in filename.split("/")[-1]:
+                filename += ".md"
+            with open("input/"+message_file, "r") as file:
+                message = file.read()
+            self.add_message("user",message)
+            self.save_chat()
+        except Exception as e:
+            print("No se ha podido cargar el archivo")
+
+    def delete_last_message(self):
+        self.delete_last_messages(1)
+
+    def delete_last_messages(self,n=5):
+        self.chat = self.chat[:-n]
+        self.save_chat()
 
     def count_words(self):
         words = 0
@@ -52,6 +93,8 @@ class Chat:
         return messages
     
     def add_message(self,role,message):
+        if not message or message == "":
+            return 
         self.chat.append({
             "role": role,
             "content": message
@@ -65,6 +108,8 @@ class Chat:
         return self.chat[-n:]
 
     def get_last_message(self):
+        if len(self.chat) == 0:
+            return []
         return self.chat[-1]
 
     def get_last_role(self):

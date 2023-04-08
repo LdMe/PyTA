@@ -92,8 +92,9 @@ class Interactive:
                 text = input("Escribe algo: ")
                 if text in self.exit_choices:
                     return
-                if text =="/save":
-                    chat.save_as_md(only_responses=True)
+                # if text starts with / then it is a command
+                if text.strip().startswith("/"):
+                    self.chatbot_commands(text,chat)
                     continue
                 chat.add_message("user",text)
                 response = self.pyta.get_response_multi(chat.chat)
@@ -103,7 +104,20 @@ class Interactive:
                 print(chat.count_words())
             except Exception as e:
                 print(traceback.format_exc())
-
+    def chatbot_commands(self,text,chat):
+        if text == "/save":
+            chat.save_as_md(only_responses=True)
+            return True
+        if text == "/delete":
+            chat.delete_last_message()
+            return True
+        if text == "/help":
+            print("Comandos disponibles:\n/save: Guarda el chat en un archivo .md\n/delete: Elimina el último mensaje\n/help: Muestra esta lista de comandos\n")
+            return True
+        if text == "/load":
+            filename = input("Escribe el nombre del archivo: ")
+            chat.load_message_from_file(filename)
+        return False
     def correct_files(self):
         self.pyta.correct_files()
 
