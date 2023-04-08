@@ -2,8 +2,6 @@ from openai_api import Openai_api
 from chatbot import Chat
 import dotenv
 import os
-import re
-import json
 
 CONTEXT =  dotenv.get_key(".env","CONTEXT") if dotenv.get_key(".env","CONTEXT") else "Eres un profesor del bootcamp de full stack developer con Javascript (ES6). Las respuestas deben ir en formato markdown y el código en el formato correspondiente."
 THEORY = dotenv.get_key(".env","THEORY") if dotenv.get_key(".env","THEORY") else "Explica detalladamente <tema>. Muestra ejemplos de código y casos de uso."
@@ -21,16 +19,7 @@ class Pyta:
         self.chatbot.clear()
     def new_chat(self,chat_name):
         self.chatbot = Chat(chat_name,save=True)
-    def load_commands(self):
-        commandFile = "commands.json"
-        # read commands file and save it to self.commands as dict
-        if not os.path.exists(commandFile):
-            # create file
-            with open(commandFile, "w") as file:
-                json.dump({},file)
-        with open(commandFile, "r") as file:
-            self.commands = json.load(file)
-
+    
     def get_response(self):
         chat = self.chatbot.chat
         print(chat)
@@ -63,8 +52,12 @@ class Pyta:
         self.chatbot.load_chat_file(chat_name)
     def save_chat(self,chat_name):
         self.chatbot.save_chat(chat_name)
-    def add_message(self,message):
-        self.chatbot.add_message(role="user",message=message)
+    def delete_chat(self,chat_name):
+        self.chatbot.delete_chat(chat_name)
+    def add_message(self,message,role="user"):
+        self.chatbot.add_message(role=role,message=message)
+    def delete_message(self,chat_name,message_id):
+        self.chatbot.delete_message(chat_name,message_id)
     def add_response(self,response):
         self.chatbot.add_message(role="assistant",message=response)
     def create_exercise(self,topic):

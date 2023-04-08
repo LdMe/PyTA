@@ -28,7 +28,8 @@ def ask_api(chat_name):
     chat = request.get_json()
     if chat[-1]["content"].strip() == "":
         return jsonify(chat)
-    pyta.load_chat(chat)
+    
+    pyta.add_message(chat[-1]["content"],chat[-1]["role"])
     if pyta.get_last_role() == "user":
         response = pyta.get_response()
         pyta.save_chat(chat_name)
@@ -45,6 +46,19 @@ def save_api(chat_name):
     pyta.save_chat(chat_name)
     chat = pyta.get_chat()
     return jsonify(chat)
+@app.route("/api/chats/<chat_name>/delete/<position>",methods=['DELETE'])
+def delete_view_message(chat_name,position):
+    pyta.delete_message(chat_name,int(position))
+    return jsonify(pyta.get_chat())
+
+@app.route("/api/chats/<chat_name>",methods=['DELETE'])
+def delete_api(chat_name):
+    pyta.delete_chat(chat_name)
+    return jsonify({"status":"ok"})
+@app.route("/chats/<chat_name>/delete",methods=['GET'])
+def delete_view(chat_name):
+    pyta.delete_chat(chat_name)
+    return redirect(url_for('index'))
 
 @app.route("/chat/<chat_name>",methods=['POST'])
 def chat_post(chat_name):

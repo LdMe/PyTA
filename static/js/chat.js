@@ -1,6 +1,7 @@
 
 let chats = [];
 let formatted_chats = [];
+let wordCountValue = 1000;
 // get the conversation name from the url
 function getChatName() {
     const url = window.location.href;
@@ -17,10 +18,13 @@ async function getChats() {
 }
 
 // remove message from chat 
-function removeMessage(position) {
+async function removeMessage(position) {
     chats.splice(position, 1);
-    document.getElementById('message-'+position).remove();
     const scrollPos= position  > 0 ? position - 1 : 0;
+    
+    await fetch('/api/chats/' + getChatName()+'/delete/'+position, {
+        method: 'DELETE'
+    });
     render(reload=true,scrollPosition=scrollPos);
 }
 
@@ -71,8 +75,9 @@ function updateMessageForm(position) {
     buttons.classList.add('buttons');
     buttons.appendChild(saveButton);
     buttons.appendChild(cancelButton);
-    section.appendChild(buttons);
+
     section.appendChild(form);
+    section.appendChild(buttons);
     
     document.getElementById('message-'+position).innerHTML = '';
     document.getElementById('message-'+position).appendChild(section);
@@ -113,7 +118,7 @@ function removeLoadingMessage() {
 // send messages to server to get response
 async function sendMessages() {
     const chat_name = getChatName();
-    const last_conversations = getLastConversations();
+    const last_conversations = getLastConversations(wordCountValue);
     const response = await fetch('/api/chats/' + chat_name, {
         method: 'POST',
         headers: {
@@ -130,7 +135,7 @@ async function createMessagesHtml(reload=false) {
     }
 
     let section = document.createElement('section');
-    let lastConversations = getLastConversations();
+    let lastConversations = getLastConversations(wordCountValue);
     let len = lastConversations.length;
     for (let i = 0; i < chats.length; i++) {
         shadow = true;
@@ -221,6 +226,12 @@ function createMessageHtml(chat, position,shadow=false) {
           render(reload = true); // renderizar de nuevo la conversación
         }
     });
+    section.addEventListener('dragenter', (event) => {
+        section.classList.add('hover');
+    });
+    section.addEventListener('dragleave', (event) => {
+        section.classList.remove('hover');
+    });
 
     const article = document.createElement('article');
     article.innerHTML = html_content;
@@ -270,10 +281,11 @@ function createNewMessageHtml() {
         section.classList.remove('user', 'system', 'assistant');
         section.classList.add(select.value);
     });
-    const input = document.createElement('input');
-    input.type = 'submit';
-    input.value = 'Enviar';
-    form.appendChild(input);
+    const sendButton = document.createElement('button');
+    sendButton.type = 'submit';
+    sendButton.classList.add('btn');
+    sendButton.innerHTML = 'Enviar';
+    form.appendChild(sendButton);
     section.appendChild(form);
     return section;
 }
@@ -281,11 +293,29 @@ function createNavbarLinks(){
     const navbarList = document.querySelector('#nav ul');
 
     const homeLink = document.createElement('li');
+    const wordCountLink = document.createElement('li');
     const saveLink = document.createElement('li');
     const downloadLink = document.createElement('li');
+    const wordCount = document.createElement('input');
+    const wordCountMessage = document.createElement('span');
+    wordCountMessage.innerText = 'max_palabras: ';
+    wordCount.type = 'number';
+    wordCount.id = 'wordCount';
+    wordCount.value = wordCountValue;
+    wordCount.min = 100;
+    wordCount.max = 3000;
+    wordCount.step = 100;
+    wordCount.addEventListener('change', (event) => {
+        wordCountValue = wordCount.value;
+        render(reload = true);
+
+    });
+    wordCountLink.innerHTML = '';
+    wordCountLink.appendChild(wordCountMessage);
+    wordCountLink.appendChild(wordCount);
 
     homeLink.innerHTML = '<a href="/">Inicio</a>';
-
+    
     saveLink.innerHTML = '<a href="#" id="save">Guardar</a>';
     saveLink.addEventListener('click', () => saveChat());
 
@@ -294,9 +324,9 @@ function createNavbarLinks(){
 
     navbarList.innerHTML = '';
     navbarList.appendChild(homeLink);
+    navbarList.appendChild(wordCountLink);
     navbarList.appendChild(saveLink);
     navbarList.appendChild(downloadLink);
-
 
 }
 // create html for all messages

@@ -1,0 +1,32 @@
+version: '3'
+services:
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask_pyta
+    networks:
+      - pyta_network
+    ports:
+      - "5001:5000"
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app
+    environment:
+      MONGO_HOST: mongodb_pyta
+    restart: always
+  mongodb:
+    image: mongo
+    container_name: mongodb_pyta
+    networks:
+      - pyta_network
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+networks:
+  pyta_network:
+volumes:
+  mongodb_data:
