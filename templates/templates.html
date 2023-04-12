@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Conversación {{ name }}
+{% endblock %}
+{% block content %}
+	<h2>Plantillas {{ name }}</h2>
+    <section id="templates">
+        
+    </section>
+    <script src="{{ url_for('static', filename='js/templates.js') }}"></script>
+{% endblock %}

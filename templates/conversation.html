@@ -5,8 +5,13 @@ Conversación {{ name }}
 {% endblock %}
 {% block content %}
 	<h2>Conversación {{ name }}</h2>
-    <section id="chat">
+    <section id="messages">
         
     </section>
-    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatView.js') }}" type="module"></script>
+    <script type="module">
+        import ChatView from "{{ url_for('static', filename='js/chatView.js') }}";
+        const chatView = new ChatView("{{ name }}");
+        chatView.render();
+    </script>
 {% endblock %}

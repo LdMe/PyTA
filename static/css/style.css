@@ -74,11 +74,11 @@ pre {
     display: flex; /* convierte los elementos en línea */
   }
   
- #nav li {
+ #nav li, .nav-buttons {
     margin: 10px 10px; /* márgenes a la izquierda y derecha para separar los elementos */
   }
   
-#nav  a,#nav span {
+#nav  a,#nav span, .nav-link {
     color: white; /* color del texto de los links */
     text-decoration: none; /* elimina la subraya del texto de los links */
     font-weight: bold; /* establece el peso de la fuente en negrita */
@@ -149,14 +149,20 @@ pre {
     cursor: grab;
   }
   .fas:hover {
-    font-size: 24px;
+    font-size: 32px;
     cursor: pointer;
+  }
+  .fas {
+    font-size: 24px;
   }
   .fa-lock, .fa-check {
     color: #188231;
   }
   .fa-edit {
     color: #8d6b22;
+  }
+  .fa-paper-plane {
+    color: #1e5e9c;
   }
   .fa-trash, .fa-times {
     color: #932d0e;

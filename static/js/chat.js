@@ -1,415 +1,158 @@
 
-let chats = [];
-let formatted_chats = [];
-let wordCountValue = 1000;
-// get the conversation name from the url
-function getChatName() {
-    const url = window.location.href;
-    const chat_name = url.split('/').pop().replace('#', '');
-    return chat_name;
-}
 
-// get all chats from server
-async function getChats() {
-    const chat_name = getChatName();
-    const response = await fetch('/api/chats/' + chat_name);
-    chats = await response.json();
-    return chats;
-}
-
-// remove message from chat 
-async function removeMessage(position) {
-    chats.splice(position, 1);
-    const scrollPos= position  > 0 ? position - 1 : 0;
-    
-    await fetch('/api/chats/' + getChatName()+'/delete/'+position, {
-        method: 'DELETE'
-    });
-    render(reload=true,scrollPosition=scrollPos);
-}
-
-// form data for message update
-function updateMessageForm(position) {
-    const message = chats[position].content;
-    const form = document.createElement('form');
-    
-    const section = document.createElement('section');
-    const textarea = document.createElement('textarea');
-    const select = document.createElement('select');
-    textarea.type = 'text';
-    textarea.name = 'message';
-    textarea.value = message;
-    form.appendChild(textarea);
-    const option1 = document.createElement('option');
-    option1.value = 'user';
-    option1.text = 'Usuario';
-    const option2 = document.createElement('option');
-    option2.value = 'assistant';
-    option2.text = 'PyTA';
-    const option3 = document.createElement('option');
-    option3.value = 'system';
-    option3.text = 'Contexto';
-
-    select.appendChild(option1);
-    select.appendChild(option2);
-    select.appendChild(option3);
-    select.name = 'role';
-    select.value = chats[position].role;
-    form.appendChild(select);
-    const saveButton = document.createElement('button');
-    saveButton.type = 'submit';
-
-    saveButton.classList.add('fas', 'fa-check');
-    saveButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        updateMessage(position, form.message.value, form.role.value);
-        return false;
-    });
-    const cancelButton = document.createElement('button');
-    cancelButton.id = 'cancel-'+position;
-    cancelButton.classList.add('fas', 'fa-times');
-    
-    cancelButton.addEventListener('click', () => updateMessage(position, message));
-    
-    const buttons = document.createElement('section');
-    buttons.classList.add('buttons');
-    buttons.appendChild(saveButton);
-    buttons.appendChild(cancelButton);
-
-    section.appendChild(form);
-    section.appendChild(buttons);
-    
-    document.getElementById('message-'+position).innerHTML = '';
-    document.getElementById('message-'+position).appendChild(section);
-    
-}
-// update message in chat
-async function updateMessage(position, message, role=null) {
-    chats[position].content = message;
-    if (role != null) {
-        chats[position].role = role;
+class Chat {
+    constructor(chat_name){
+        this.chat_name = chat_name;
+        this.messages = [];
+        this.formatted_messages = [];
+        this.wordCountValue = 1000;
+        this.converter = new showdown.Converter();
     }
-    await fetch('/api/chats/' + getChatName()+'/update/'+position, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(chats[position])
-    });
-    render(reload=true,scrollPosition=position);
-}
-
-// add new message to chat
-function addMessage(message,role) {
-    chats.push({
-        role: role,
-        content: message
-    });
-}
-// create loading message
-function createLoadingMessage() {
-    const div = document.createElement('div');
-    div.className = 'message loading';
-    div.id = 'loading';
-    const img = document.createElement('img');
-    img.src = '/static/img/loading.gif';
-    div.appendChild(img);
-    document.getElementById('chat').appendChild(div);
-    div.scrollIntoView();
-}
-// remove loading message
-function removeLoadingMessage() {
-    document.getElementById('loading').remove();
-}
-
-// send messages to server to get response
-async function sendMessages() {
-    const chat_name = getChatName();
-    const last_conversations = getLastConversations(wordCountValue);
-    const response = await fetch('/api/chats/' + chat_name, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(last_conversations)
-    });
-    return await response.json();
-}
-
-async function createMessagesHtml(reload=false) {
-    if (!reload){
-        await getChats();
+    getChatName() {
+        return this.chat_name;
     }
 
-    let section = document.createElement('section');
-    let lastConversations = getLastConversations(wordCountValue);
-    let len = lastConversations.length;
-    for (let i = 0; i < chats.length; i++) {
-        shadow = true;
-        if (chats.length - i <= len) {
-            shadow = false;
+    async getMessages() {
+        const chat_name = this.getChatName();
+        const response = await fetch('/api/chat/' + chat_name);
+        this.messages = await response.json();
+        this.messages = this.messages.map(message => {
+            message._id = message._id["$oid"];
+            return message;
+        });
+        
+        return this.messages;
+    }
+
+    async saveMessages() {
+        const chat_name = this.getChatName();
+        console.log(this.messages)
+        const response = await fetch('/api/chat/' + chat_name + '/save', { 
+            method: 'POST' ,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: this.messages
+            })
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    async getFormattedMessages() {
+        this.formatted_messages = [];
+        for (let i = 0; i < this.messages.length; i++) {
+            this.formatted_messages.push(this.formatMessage(this.messages[i]));
         }
-        section.appendChild(createMessageHtml(chats[i], i,shadow));
+        return this.formatted_messages;
     }
-    // add highlight class to last message sections with id message-<i>
 
-    return section;
-}
-
-// create html for single message
-function createMessageHtml(chat, position,shadow=false) {
-    const role = chat.role;
-    const content = chat.content;
-    const converter = new showdown.Converter();
-    const html_content = converter.makeHtml(content);
-    const chatContainer = document.getElementById('chat');
-    const section = document.createElement('section');
-    const scrollThreshold  = 180;
-
-    section.classList.add('message', role);
-    if (shadow == true) {
-        section.classList.add('shadow');
+    formatMessage(message) {
+        
+        const formatted_message = {
+            content: this.converter.makeHtml(message.content),
+            role: message.role,
+            _id: message._id
+        };
+        return formatted_message;
     }
-    section.id = 'message-'+position;
 
-    const buttons = document.createElement('section');
-    const dragIcon = document.createElement('i');
-    dragIcon.classList.add('fas', 'fa-lock');
-    section.appendChild(dragIcon);
-    
-    section.draggable = false;
-    dragIcon.addEventListener('click', (event) => {
-        section.draggable = !section.draggable;
-        section.classList.toggle('draggable');
-        dragIcon.classList.toggle('fa-lock');
-        dragIcon.classList.toggle('fa-bars');
-
-    });
-    buttons.classList.add('buttons');
-
-    const updateButton = document.createElement('i');
-    updateButton.classList.add('fas', 'fa-edit');
-    updateButton.addEventListener('click', () => updateMessageForm(position));
-
-    const removeButton = document.createElement('i');
-    removeButton.classList.add('fas', 'fa-trash');
-    removeButton.addEventListener('click', () => removeMessage(position));
-
-    buttons.appendChild(dragIcon);
-    buttons.appendChild(updateButton);
-    buttons.appendChild(removeButton);
-    section.appendChild(buttons);
-    section.addEventListener("dragstart", (event) => {
-        // if click on drag icon position, set data to position, else do nothing
-        console.log(event.target)
-        if (section.draggable)
-        {
-            event.dataTransfer.setData("text/plain", position);
-        }
-      });
-      // evento dragover
-    section.addEventListener("dragover", (event) => {
-        event.preventDefault();
-        const messagePos = event.clientY;
-        console.log(messagePos, scrollThreshold)
-        if (messagePos <  scrollThreshold) {
-            // scrollear hacia arriba
-            window.scrollBy(0, -20);
-        } else if (messagePos > window.innerHeight - scrollThreshold) {
-            // scrollear hacia abajo
-            window.scrollBy(0, 20);
-        }
-    });
-      // evento drop
-    section.addEventListener("drop", (event) => {
-        event.preventDefault();
-        const sourcePos = parseInt(event.dataTransfer.getData("text/plain"));
-        const targetPos = position;
-        if (sourcePos !== targetPos) {
-          // cambiar orden de mensajes en el arreglo chats
-          const sourceChat = chats[sourcePos];
-          chats.splice(sourcePos, 1);
-          chats.splice(targetPos, 0, sourceChat);
-          render(reload = true); // renderizar de nuevo la conversación
-        }
-    });
-    section.addEventListener('dragenter', (event) => {
-        section.classList.add('hover');
-    });
-    section.addEventListener('dragleave', (event) => {
-        section.classList.remove('hover');
-    });
-
-    const article = document.createElement('article');
-    article.innerHTML = html_content;
-    section.appendChild(article);
-    
-    return section;
-
-}
-
-// create html for new message
-function createNewMessageHtml() {
-    const section = document.createElement('section');
-    section.classList.add('message');
-    const form = document.createElement('form');
-    form.onsubmit = () => {
-        if (form.message.value === '') {
-            return false;
-        }
-        addMessage(form.message.value, form.role.value);
-        send();
-        return false;
-    };
-    const textarea = document.createElement('textarea');
-    textarea.type = 'text';
-    textarea.name = 'message';
-    textarea.placeholder = 'Nuevo mensaje';
-    form.appendChild(textarea);
-    const select = document.createElement('select');
-    select.name = 'role';
-    select.id = 'role';
-    const userOption = document.createElement('option');
-    userOption.value = 'user';
-    userOption.innerText = 'Usuario';
-    const systemOption = document.createElement('option');
-    systemOption.value = 'system';
-    systemOption.innerText = 'Contexto';
-    const assistantOption = document.createElement('option');
-    assistantOption.value = 'assistant';
-    assistantOption.innerText = 'PyTA';
-    select.appendChild(userOption);
-    select.appendChild(assistantOption);
-    select.appendChild(systemOption);
-    
-    form.appendChild(select);
-    // for each option in select
-    select.addEventListener('change', (event) => {
-        section.classList.remove('user', 'system', 'assistant');
-        section.classList.add(select.value);
-    });
-    const sendButton = document.createElement('button');
-    const resendButton = document.createElement('button');
-    sendButton.type = 'submit';
-    sendButton.classList.add('btn');
-    resendButton.classList.add('btn');
-    sendButton.innerHTML = 'Enviar';
-    resendButton.innerHTML = 'Reenviar';
-    resendButton.addEventListener('click', (event) => {
-        send();
-    });
-    form.appendChild(sendButton);
-    form.appendChild(resendButton);
-    section.appendChild(form);
-    return section;
-}
-function createNavbarLinks(){
-    const navbarList = document.querySelector('#nav ul');
-
-    const homeLink = document.createElement('li');
-    const wordCountLink = document.createElement('li');
-    const saveLink = document.createElement('li');
-    const downloadLink = document.createElement('li');
-    const wordCount = document.createElement('input');
-    const wordCountMessage = document.createElement('span');
-    wordCountMessage.innerText = 'max_palabras: ';
-    wordCount.type = 'number';
-    wordCount.id = 'wordCount';
-    wordCount.value = wordCountValue;
-    wordCount.min = 100;
-    wordCount.max = 3000;
-    wordCount.step = 100;
-    wordCount.addEventListener('change', (event) => {
-        wordCountValue = wordCount.value;
-        render(reload = true);
-
-    });
-    wordCountLink.innerHTML = '';
-    wordCountLink.appendChild(wordCountMessage);
-    wordCountLink.appendChild(wordCount);
-
-    homeLink.innerHTML = '<a href="/">Inicio</a>';
-    
-    downloadLink.innerHTML = '<a href="#" id="download">Descargar</a>';
-    downloadLink.addEventListener('click', () => downloadChat());
-
-    navbarList.innerHTML = '';
-    navbarList.appendChild(homeLink);
-    navbarList.appendChild(wordCountLink);
-    navbarList.appendChild(downloadLink);
-
-}
-// create html for all messages
-async function createHtml(reload=false) {
-    createNavbarLinks();
-    const messagesHtml = await createMessagesHtml(reload);
-    const newMessageHtml = createNewMessageHtml();
-
-    document.getElementById('chat').innerHTML = '';
-    document.getElementById('chat').appendChild(messagesHtml);
-    document.getElementById('chat').appendChild(newMessageHtml);
-}
-async function saveChat(){
-    const chat_name = getChatName();
-    const response = await fetch('/api/chats/' + chat_name, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(chats)
-    });
-    return await response.json();
-}
-// función para obtener las últimas conversaciones cuya suma de contenidos no supere las 3000 palabras
-function getLastConversations(numWords = 2000) {
-    let sum = 0;
-    let result = [];
-    for (let i = chats.length - 1; i >= 0; i--) {
-      const message = chats[i].content;
-      const words = message.split(' ');
-      sum += words.length;
-      if (sum <= numWords) {
-        result.push(chats[i]);
-      } else {
-        break;
-      }
+    downloadMessages() {
+        const chat_name = this.getChatName() + '.md';
+        const content = this.messages.filter(chat => chat.role == 'assistant').map(chat => chat.content).join("\n\n");
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', chat_name);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
-    console.log(result);
-    return result.reverse();
-}
-async function downloadChat(){
-    const chat_name = getChatName() +".md";
-    const content = chats.filter(chat => chat.role == 'assistant').map(chat => chat.content).join("\n");
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-    element.setAttribute('download', chat_name);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-}
 
-
-
-async function render(reload=false,scrollPosition=null) {
-    await createHtml(reload);
-    hljs.highlightAll();
-    if (scrollPosition){
-        document.getElementById("message-"+scrollPosition).scrollIntoView();
-        window.scrollBy(0, -100);
+    getLastMessagesByWordCount() {
+        let lastMessages = [];
+        let wordCountTotal = 0;
+        for (let i = this.messages.length - 1; i >= 0; i--) {
+            const message = this.messages[i];
+            const messageWordCount = message.content.split(' ').length;
+            if (wordCountTotal + messageWordCount <= this.wordCountValue) {
+                lastMessages.push(message);
+                wordCountTotal += messageWordCount;
+            } else {
+                break;
+            }
+        }
+        return lastMessages;
     }
+    async addMessage(content, role,template="default") {
+        const chat_name = this.getChatName();
+        if (content.length != 0 ){
+            await fetch('/api/chat/' + chat_name, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: content,
+                    role: role,
+                    template: template
+                })
+            });
+        }
+        
+    }
+    async sendMessage() {
+        
+        const chat_name = this.getChatName();
+        const response = await fetch('/api/chat/' + chat_name, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    wordCount: this.wordCountValue
+                })
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    async updateMessage(id, content, role) {
+        const chat_name = this.getChatName();
+        const response = await fetch('/api/chat/' + chat_name + '/update/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                role: role
+            })
+        });
+        const data = await response.json();
+
+        return data;
+    }
+    async deleteMessage(id) {
+        const chat_name = this.getChatName();
+        const response = await fetch('/api/chat/' + chat_name + '/delete/' + id, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        return data;
+    }
+    setWordCount(wordCount) {
+        this.wordCountValue = wordCount;
+    }
+
+    async getTemplates() {
+        const response = await fetch('/api/templates');
+        const data = await response.json();
+        return data;
+    }
+
+    
 }
 
-// send messages to server and render response
-async function send() {
-    createLoadingMessage();
-    const response = await sendMessages();
-    removeLoadingMessage();
-    chats = response;
-    const scrollPos = chats.length;
-    render(scrollPosition=scrollPos);
-}
-
-// render messages on page load
-
-render();
+export default Chat;

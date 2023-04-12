@@ -15,64 +15,77 @@ def index():
 
 @app.route("/chat/<chat_name>",methods=['GET'])
 def chat(chat_name):
-    return render_template('conversation.html', name=chat_name,chat=chat)
+    return render_template('conversation.html', name=chat_name)
 
-@app.route("/api/chats/<chat_name>",methods=['GET'])
+@app.route("/templates")
+def templates():
+    return render_template('templates.html')
+
+@app.route("/api/templates",methods=['GET'])
+def get_templates():
+    templates = pyta.get_templates()
+    return jsonify(templates)
+
+@app.route("/api/templates",methods=['POST'])
+def add_template():
+    data = request.get_json()
+    template_name = data["name"]
+    template = data["content"]
+    replace_word = data["replaceWord"]
+    pyta.add_template(template_name,template,replace_word)
+    return jsonify({"status":"ok"})
+
+
+@app.route("/api/chat/<chat_name>",methods=['GET'])
 def chat_api(chat_name):
-    pyta.load_chat_file(chat_name)
+    pyta.load_chat(chat_name)
     chat = pyta.get_chat()
     return jsonify(chat)
 
-@app.route("/api/chats/<chat_name>",methods=['POST'])
-def ask_api(chat_name):
-    chat = request.get_json()
-    if chat[-1]["content"].strip() == "":
-        return jsonify(chat)
-    pyta.add_message(chat[-1]["content"],chat[-1]["role"])
-    if pyta.get_last_role() == "user":
-        response = pyta.get_response()
-        pyta.save_chat(chat_name)
-        chat = pyta.get_chat()
-        return jsonify(chat)
-    pyta.save_chat(chat_name)
+@app.route("/api/chat/<chat_name>",methods=['PUT'])
+def add_message(chat_name):
+    message = request.get_json()
+    if message["content"] == "":
+        return jsonify({"status":"ok"})
+    template = message["template"] if ("template" in message and message["template"]!= "default") else None
+    pyta.add_message(message["content"],message["role"],template)
     chat = pyta.get_chat()
     return jsonify(chat)
 
-@app.route("/api/chats/<chat_name>",methods=['PUT'])
-def save_api(chat_name):
-    chat = request.get_json()
-    pyta.load_chat(chat)
-    pyta.save_chat(chat_name)
-    chat = pyta.get_chat()
-    return jsonify(chat)
-@app.route("/api/chats/<chat_name>/delete/<position>",methods=['DELETE'])
-def delete_view_message(chat_name,position):
-    pyta.delete_message(chat_name,int(position))
+@app.route("/api/chat/<chat_name>",methods=['POST'])
+def get_response(chat_name):
+    data = request.get_json()
+    num_words = 1500
+    if "num_words" in data:
+        num_words = int(data["num_words"])
+    pyta.load_chat(chat_name)
+    pyta.get_response(num_words=num_words)
     return jsonify(pyta.get_chat())
-@app.route("/api/chats/<chat_name>/update/<position>",methods=['PUT'])
-def update_view_message(chat_name,position):
+
+@app.route("/api/chat/<chat_name>/save",methods=['POST'])
+def save_messages(chat_name):
+    data = request.get_json()
+    content = data["content"]
+    pyta.save_chat(chat_name,content)
+    return jsonify(pyta.get_chat())
+
+@app.route("/api/chat/<chat_name>/delete/<id>",methods=['DELETE'])
+def delete_message(chat_name,id):
+    pyta.delete_message(chat_name,id)
+    return jsonify(pyta.get_chat())
+
+@app.route("/api/chat/<chat_name>/update/<id>",methods=['PUT'])
+def update_message(chat_name,id):
     data = request.get_json()
     content = data["content"]
     role = data["role"]
-    pyta.update_message(chat_name,int(position),content,role)
+    pyta.update_message(chat_name,id,content,role)
     return jsonify(pyta.get_chat())
 
-@app.route("/api/chats/<chat_name>",methods=['DELETE'])
-def delete_api(chat_name):
+@app.route("/api/chat/<chat_name>",methods=['DELETE'])
+def delete_chat(chat_name):
     pyta.delete_chat(chat_name)
     return jsonify({"status":"ok"})
-@app.route("/chats/<chat_name>/delete",methods=['GET'])
-def delete_view(chat_name):
-    pyta.delete_chat(chat_name)
-    return redirect(url_for('index'))
-
-@app.route("/chat/<chat_name>",methods=['POST'])
-def chat_post(chat_name):
-    pyta.load_chat(chat_name)
-    message = request.form["message"]
-    pyta.add_message(message)
-    response = pyta.get_response()
-    return chat(chat_name)
 
 @app.route("/new_chat", methods=['POST'])
 def new_chat():
