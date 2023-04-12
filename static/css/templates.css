@@ -1,0 +1,50 @@
+#newTemplateForm , .template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80%;
+    margin: 20px auto;
+    background-color: blanchedalmond;
+    padding: 15px;
+    border-radius: 15px;
+  }
+  
+  #newTemplateForm label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  #newTemplateForm input,
+  #newTemplateForm textarea {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  #newTemplateForm button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #newTemplateForm button:hover {
+    background-color: #3e8e41;
+  }
+  
+  #newTemplateForm textarea {
+    height: 200px;
+  }
+  .template {
+    background-color: blanchedalmond;
+    max-width: 80%;
+  }

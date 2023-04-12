@@ -34,8 +34,9 @@ function createTemplatesHtml(templates){
 }
 function createTemplateHtml(template){
     console.log(template);
-    const templateDiv = document.createElement('div');
-    templateDiv.setAttribute('id', template._id);
+    const templateSection = document.createElement('section');
+    templateSection.setAttribute('id', template.name);
+    templateSection.setAttribute('class', 'template');
     const templateName = document.createElement('h3');
     templateName.innerText = template.name;
     const templateContent = document.createElement('p');
@@ -44,19 +45,21 @@ function createTemplateHtml(template){
     templateReplaceWord.innerText = template.replace_word;
     const templateDeleteButton = document.createElement('button');
     templateDeleteButton.setAttribute('id', 'delete');
-    templateDeleteButton.innerText = 'Delete';
+    templateDeleteButton.classList.add('fas', 'fa-trash');
     templateDeleteButton.addEventListener('click', deleteTemplate);
-    templateDiv.appendChild(templateName);
-    templateDiv.appendChild(templateContent);
-    templateDiv.appendChild(templateReplaceWord);
-    templateDiv.appendChild(templateDeleteButton);
-    document.getElementById('templates').appendChild(templateDiv);
+    templateSection.appendChild(templateDeleteButton);
+    templateSection.appendChild(templateName);
+    templateSection.appendChild(templateContent);
+    templateSection.appendChild(templateReplaceWord);
+    document.getElementById('templates').appendChild(templateSection);
 }
 async function deleteTemplate(event){
     const templateId = event.target.parentNode.id;
     const response = await fetch(`/api/templates/${templateId}`, {
         method: 'DELETE'
     });
+    renderTemplates();
+
 }
 async function createNewTemplateForm(){
     const form = document.createElement('form');
@@ -84,7 +87,7 @@ async function createNewTemplateForm(){
     const submitButton = document.createElement('button');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('id', 'submit');
-    submitButton.innerText = 'Submit';
+    submitButton.innerText = 'Crear';
     form.appendChild(nameLabel);
     form.appendChild(nameInput);
     form.appendChild(contentLabel);

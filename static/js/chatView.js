@@ -243,12 +243,7 @@ class ChatView {
         const navButtons = document.createElement('ul');
         navButtons.id = 'nav-buttons';
         navButtons.classList.add('nav-buttons');
-        const inicioLink = document.createElement('li');
-        inicioLink.classList.add('nav-link');
-        const inicioButton = document.createElement('a');
-        inicioButton.classList.add('fas', 'fa-home','nav-link');
-        inicioButton.href = '/';
-        inicioLink.appendChild(inicioButton);
+        
         const wordCountLink = document.createElement('li');
         wordCountLink.classList.add('nav-link');
         const wordCountLabel = document.createElement('label');
@@ -279,7 +274,6 @@ class ChatView {
         wordCountLink.appendChild(wordCountLabel);
         wordCountLink.appendChild(wordCountInput);
         saveLink.appendChild(saveButton);
-        navButtons.appendChild(inicioLink);
         navButtons.appendChild(wordCountLink);
         navButtons.appendChild(saveLink);
         nav.appendChild(navButtons);
@@ -301,10 +295,8 @@ class ChatView {
         return this.chat.messages.find((message) => message._id === id);
     }
     async addMessage(content, role, template="default") {
-        this.createLoadingMessage();
         await this.chat.addMessage(content, role, template);
-        this.removeLoadingMessage();
-        this.render();
+        await this.render();
     }
     async sendMessage() {
         this.createLoadingMessage();
@@ -367,9 +359,9 @@ class ChatView {
     scroll() {
         console.log(this.scrollPosition);
         if (this.scrollPosition === -1){
-            const message = document.getElementById('message-new');
+            /* const message = document.getElementById('message-new');
             message.scrollIntoView();
-            window.scrollBy(0, 100);
+            window.scrollBy(0, 100); */
         }
         else {
             const message = this.getMessageByPosition(this.scrollPosition);

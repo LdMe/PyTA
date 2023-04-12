@@ -2,9 +2,11 @@
 
 {% block title %}
 Conversación {{ name }}
+
 {% endblock %}
 {% block content %}
 	<h2>Plantillas {{ name }}</h2>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/templates.css') }}">
     <section id="templates">
         
     </section>

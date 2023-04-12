@@ -40,8 +40,9 @@ class Chat:
     def get_clean_messages(self,num_words=1500):
         return [{"content":message["content"],"role":message["role"]} for message in self.get_last_messages_by_words(num_words)]   
 
-    def delete_chat(self):
-        mongo.db[self.chat_name].drop()
+    def delete_chat(self,chat_name=None):
+        name = chat_name if chat_name else self.chat_name
+        mongo.db[name].drop()
     
     def clear_chat(self):
         mongo.db[self.chat_name].delete_many({})

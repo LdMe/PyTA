@@ -35,6 +35,11 @@ def add_template():
     pyta.add_template(template_name,template,replace_word)
     return jsonify({"status":"ok"})
 
+@app.route("/api/templates/<template_name>",methods=['DELETE'])
+def delete_template(template_name):
+    pyta.delete_template(template_name)
+    return jsonify({"status":"ok"})
+
 
 @app.route("/api/chat/<chat_name>",methods=['GET'])
 def chat_api(chat_name):
@@ -86,6 +91,11 @@ def update_message(chat_name,id):
 def delete_chat(chat_name):
     pyta.delete_chat(chat_name)
     return jsonify({"status":"ok"})
+
+@app.route("/chats/<chat_name>/delete",methods=['GET'])
+def delete_chat_view(chat_name):
+    pyta.delete_chat(chat_name)
+    return redirect(url_for('index'))
 
 @app.route("/new_chat", methods=['POST'])
 def new_chat():

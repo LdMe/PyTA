@@ -19,12 +19,15 @@ services:
   mongodb:
     image: mongo
     container_name: mongodb_pyta
+    environment:
+      MONGO_INITDB_DATABASE: templates
     networks:
       - pyta_network
     ports:
       - "27018:27017"
     volumes:
       - mongodb_data:/data/db
+      - ./assets/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     restart: always
 networks:
   pyta_network:
