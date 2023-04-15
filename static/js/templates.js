@@ -58,7 +58,7 @@ function createTemplateHtml(template){
 
     const templateDeleteButton = document.createElement('button');
     templateDeleteButton.setAttribute('id', 'delete');
-    templateDeleteButton.classList.add('fas', 'fa-trash');
+    templateDeleteButton.classList.add('fas', 'fa-trash-alt');
     templateDeleteButton.title = 'Eliminar plantilla';
     templateDeleteButton.addEventListener('click', deleteTemplate);
     templateSection.appendChild(templateDeleteButton);

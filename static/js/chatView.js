@@ -90,7 +90,7 @@ class ChatView {
         const removeButton = document.createElement('i');
         updateButton.classList.add('fas', 'fa-edit');
         updateButton.title = 'Editar mensaje';
-        removeButton.classList.add('fas', 'fa-trash');
+        removeButton.classList.add('fas', 'fa-trash-alt');
         removeButton.title = 'Eliminar mensaje';
         updateButton.addEventListener('click', () => this.updateMessageForm(id));
         removeButton.addEventListener('click', () => this.deleteMessage(id));

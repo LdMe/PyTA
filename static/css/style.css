@@ -176,7 +176,7 @@ pre {
   .fa-paper-plane:hover,.fa-circle-plus:hover {
     color: #2cb3f2;
   }
-  .fa-trash, .fa-times {
+  .fa-trash, .fa-times, .fa-trash-alt {
     color: #932d0e;
   }
   .buttons {
