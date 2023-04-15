@@ -8,13 +8,13 @@ PyTA
 	<h2>Conversaciones:</h2>
 	<ul id="lista-links">
 	{% for  conversation in conversations %}
-		<li><a class="chat-link" href="{{ url_for('chat', chat_name=conversation) }}"> {{ conversation }}</a> <a href="/chats/{{conversation}}/delete" class="btn-borrar"><i class="fas fa-trash-alt"></i></a></li>
+		<li><a class="chat-link" href="{{ url_for('chat', chat_name=conversation) }}"> {{ conversation }}</a> <a href="/chats/{{conversation}}/delete" class="btn-borrar"><i class="fas fa-trash-alt" title="Eliminar conversación"></i></a></li>
 	{% endfor %}
 	</ul>
 	<form action="/new_chat" method="post">
         <label for="chat_name">Nueva conversación:</label>
         <input type="text" name="chat_name" id="chat_name" placeholder="nombre">
-        <input type="submit" value="Crear">
+        <button type="submit" class="fas fa-circle-plus" value="Crear" title="Crear una conversación">
     </form>
 
 {% endblock %}

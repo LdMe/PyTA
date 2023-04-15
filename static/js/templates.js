@@ -33,24 +33,37 @@ function createTemplatesHtml(templates){
     });
 }
 function createTemplateHtml(template){
-    console.log(template);
     const templateSection = document.createElement('section');
     templateSection.setAttribute('id', template.name);
     templateSection.setAttribute('class', 'template');
     const templateName = document.createElement('h3');
     templateName.innerText = template.name;
-    const templateContent = document.createElement('p');
-    templateContent.innerText = template.content;
-    const templateReplaceWord = document.createElement('p');
-    templateReplaceWord.innerText = template.replace_word;
+    const templateContent = document.createElement('section');
+    
+    const parts = template.content.split(template.replace_word);
+    const pContent = document.createElement('p');
+    parts.forEach(part => {
+        const partElement = document.createElement('span');
+        partElement.innerText = part;
+        pContent.appendChild(partElement);
+        if (part !== parts[parts.length - 1]) {
+            const replaceWordElement = document.createElement('code');
+            replaceWordElement.classList.add('hljs','bold');
+            replaceWordElement.innerText = template.replace_word;
+            pContent.appendChild(replaceWordElement);
+        }
+
+    });
+    templateContent.appendChild(pContent);
+
     const templateDeleteButton = document.createElement('button');
     templateDeleteButton.setAttribute('id', 'delete');
     templateDeleteButton.classList.add('fas', 'fa-trash');
+    templateDeleteButton.title = 'Eliminar plantilla';
     templateDeleteButton.addEventListener('click', deleteTemplate);
     templateSection.appendChild(templateDeleteButton);
     templateSection.appendChild(templateName);
     templateSection.appendChild(templateContent);
-    templateSection.appendChild(templateReplaceWord);
     document.getElementById('templates').appendChild(templateSection);
 }
 async function deleteTemplate(event){
@@ -59,7 +72,6 @@ async function deleteTemplate(event){
         method: 'DELETE'
     });
     renderTemplates();
-
 }
 async function createNewTemplateForm(){
     const form = document.createElement('form');
@@ -87,7 +99,8 @@ async function createNewTemplateForm(){
     const submitButton = document.createElement('button');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('id', 'submit');
-    submitButton.innerText = 'Crear';
+    submitButton.classList.add('fas', 'fa-save');
+    submitButton.title = 'Guardar plantilla';
     form.appendChild(nameLabel);
     form.appendChild(nameInput);
     form.appendChild(contentLabel);
@@ -101,7 +114,6 @@ async function createNewTemplateForm(){
         if (form.content.value === '') {
             return false;
         }
-        console.log("form submitted")
         await addTemplate(form.templateName.value, form.content.value, form.replaceWord.value);
         renderTemplates();
     };

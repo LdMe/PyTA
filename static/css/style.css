@@ -1,14 +1,15 @@
 .message,.template {
 	padding: 10px;
-	margin-bottom: 10px;
+  margin: 10px auto;
 	border-radius: 15px;
+  max-width: 90%;
 	font-size: 18px;
     background-color: #DCF8C6;
 }
 
 .message textarea, .template textarea {
     width: 100%;
-    height: 200px;
+    height: 300px;
     border-radius: 15px;
     font-size: 18px;
     padding: 10px;
@@ -140,7 +141,7 @@ pre {
     vertical-align: middle; /* alinea verticalmente el icono con el texto */
   }
 
-  .btn-borrar:hover i {
+  .fa-trash:hover, .fa-trash-alt:hover, .fa-times:hover  {
     color: #ff0000; /* color del icono de la basura al pasar por encima */
   }
   main {
@@ -156,14 +157,24 @@ pre {
   .fas {
     font-size: 24px;
   }
-  .fa-lock, .fa-check {
+  .fa-lock, .fa-save {
     color: #188231;
   }
+  .fa-lock:hover, .fa-save:hover {
+    color: #1bd446;
+  }
+  
   .fa-edit {
     color: #8d6b22;
   }
-  .fa-paper-plane {
+  .fa-edit:hover {
+    color: #e1c245;
+  }
+  .fa-paper-plane,.fa-circle-plus {
     color: #1e5e9c;
+  }
+  .fa-paper-plane:hover,.fa-circle-plus:hover {
+    color: #2cb3f2;
   }
   .fa-trash, .fa-times {
     color: #932d0e;
@@ -177,4 +188,22 @@ pre {
     border: none;
   }
 
+  .bold {
+    font-weight: bold;
+  }
   
+  @media screen and (max-width: 1024px) {
+    .fas {
+      font-size: 40px;
+    }
+    #nav {
+      height: 80px;
+    }
+    main {
+      margin-top: 80px;
+    }
+    body {
+      font-size: 1.5rem;
+    }
+  }
+    

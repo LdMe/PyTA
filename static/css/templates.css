@@ -22,29 +22,15 @@
     margin-bottom: 1rem;
     width: 100%;
   }
+ 
   
-  #newTemplateForm button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 0.5rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  #newTemplateForm button:hover {
-    background-color: #3e8e41;
-  }
+ 
   
   #newTemplateForm textarea {
-    height: 200px;
+    height: 300px;
   }
   .template {
     background-color: blanchedalmond;
     max-width: 80%;
   }
+

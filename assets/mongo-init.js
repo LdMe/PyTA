@@ -13,3 +13,7 @@ db.correccion.insertOne({
     replace_word:"<tema>",
 });
 
+db.correccion.insertOne({
+    content:"Explica lo que hace el siguiente código\n\n```js\n\n<codigo>\n\n```",
+    replace_word:"<codigo>",
+});

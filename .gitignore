@@ -1,6 +1,2 @@
 .env
 __pycache__
-output/*
-input/*
-
-run.sh

@@ -26,7 +26,6 @@ class Chat {
 
     async saveMessages() {
         const chat_name = this.getChatName();
-        console.log(this.messages)
         const response = await fetch('/api/chat/' + chat_name + '/save', { 
             method: 'POST' ,
             headers: {

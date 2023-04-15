@@ -19,6 +19,7 @@ class ChatView {
         const buttons = section.querySelector('.buttons');
         const dragIcon = document.createElement('i');
         dragIcon.classList.add('fas', 'fa-lock');
+        dragIcon.title = 'Arrastrar mensaje';
         buttons.insertBefore(dragIcon, buttons.firstChild);
         section.draggable = false;
         dragIcon.addEventListener('click', (event) => {
@@ -57,6 +58,10 @@ class ChatView {
             const targetPos = position;
 
             this.scrollPosition = position;
+            // si una de las posiciones no es un número, no hacer nada
+            if (isNaN(sourcePos) || isNaN(targetPos)) {
+                return;
+            }
             if (sourcePos !== targetPos) {
               // cambiar orden de mensajes en el arreglo messages
               const sourceChat = this.getMessageByPosition(sourcePos);
@@ -84,7 +89,9 @@ class ChatView {
         const updateButton = document.createElement('i');
         const removeButton = document.createElement('i');
         updateButton.classList.add('fas', 'fa-edit');
+        updateButton.title = 'Editar mensaje';
         removeButton.classList.add('fas', 'fa-trash');
+        removeButton.title = 'Eliminar mensaje';
         updateButton.addEventListener('click', () => this.updateMessageForm(id));
         removeButton.addEventListener('click', () => this.deleteMessage(id));
         buttons.appendChild(updateButton);
@@ -160,25 +167,29 @@ class ChatView {
             messageSection.classList.remove('user', 'assistant', 'system','new');
             messageSection.classList.add(role);
         });
+        selectRole.title = 'Rol del mensaje';
         const selectTemplate = document.createElement('select');
         selectTemplate.name = 'template';
+        selectTemplate.title = 'Plantilla';
         const optionDefault = document.createElement('option');
         optionDefault.value = 'default';
         optionDefault.innerHTML = 'Sin plantilla';
         selectTemplate.appendChild(optionDefault);
         const templates = await this.chat.getTemplates();
-        console.log(templates)
         templates.forEach((template) => {
             const option = document.createElement('option');
             option.value = template.name;
             option.innerHTML = template.name;
+            option.title = "Plantilla:\n---\n"+template.content+"\n---\npalabra a reemplazar: \n---\n"+template.replace_word+"\n---\n";
             selectTemplate.appendChild(option);
         });
         const saveButton = document.createElement('button');
         const cancelButton = document.createElement('button');
 
-        saveButton.classList.add('fas', 'fa-check');
+        saveButton.classList.add('fas', 'fa-save');
+        saveButton.title = 'Guardar mensaje';
         cancelButton.classList.add('fas', 'fa-times');
+        cancelButton.title = 'Cancelar';
         saveButton.type = 'submit';
         saveButton.value = 'Enviar';
 
@@ -213,12 +224,13 @@ class ChatView {
             sendButton.addEventListener('click', async (event) => {
                 event.preventDefault();
                 if (form.content.value != "") {
-                    await this.addMessage(form.content.value, form.role.value);
+                    await this.addMessage(form.content.value, form.role.value, form.template.value);
                     
                 }
                 await this.sendMessage();
                 return false;
             });
+            sendButton.title = 'Enviar mensajes';
             form.appendChild(sendButton);
         }
 
@@ -248,6 +260,7 @@ class ChatView {
         wordCountLink.classList.add('nav-link');
         const wordCountLabel = document.createElement('label');
         wordCountLabel.innerHTML = 'Máximo de palabras: ';
+        wordCountLabel.title = 'Limitar conversación a la cantidad de palabras indicada';
         wordCountLabel.classList.add("nav-link");
         const wordCountInput = document.createElement('input');
         wordCountInput.type = 'number';
@@ -264,7 +277,8 @@ class ChatView {
         const saveLink = document.createElement('li');
         saveLink.classList.add('nav-link');
         const saveButton = document.createElement('button');
-        saveButton.classList.add('fas', 'fa-save','nav-link');
+        saveButton.classList.add('fas', 'fa-file-arrow-down','nav-link');
+        saveButton.title = 'Descargar respuestas';
         saveButton.value = 'Guardar';
         saveButton.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -357,7 +371,6 @@ class ChatView {
         document.getElementById('loading').remove();
     }
     scroll() {
-        console.log(this.scrollPosition);
         if (this.scrollPosition === -1){
             /* const message = document.getElementById('message-new');
             message.scrollIntoView();
