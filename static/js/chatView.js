@@ -314,7 +314,13 @@ class ChatView {
     }
     async sendMessage() {
         this.createLoadingMessage();
-        await this.chat.sendMessage();
+        try{
+            await this.chat.sendMessage();
+        }
+        catch (error) {
+            alert("Ha ocurrido un error al enviar el mensaje")
+            console.log(error);
+        }
         this.removeLoadingMessage();
         this.render();
     }

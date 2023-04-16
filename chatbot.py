@@ -93,8 +93,9 @@ class Chat:
             words += len(message["content"].split(" "))
             messages.append(message)
             if words >= n:
-                return messages
-        return messages
+                return reversed(messages)
+        
+        return reversed(messages)
     
     def add_message(self,role,message):
         if not message or message == "":
