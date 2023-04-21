@@ -5,13 +5,16 @@ PyTA
 {% endblock %}
 
 {% block content %}
+	<h1>PyTA</h1>
+	<h2>Tu asistente inteligente</h2>
+	<img src="{{url_for('static', filename='img/pyta.png')}}" alt="PyTA" class="main-image">
 	<h2>Conversaciones:</h2>
 	<ul id="lista-links">
 	{% for  conversation in conversations %}
 		<li><a class="chat-link" href="{{ url_for('chat', chat_name=conversation) }}"> {{ conversation }}</a> <a href="/chats/{{conversation}}/delete" class="btn-borrar"><i class="fas fa-trash-alt" title="Eliminar conversación"></i></a></li>
 	{% endfor %}
 	</ul>
-	<form action="/new_chat" method="post">
+	<form action="/new_chat" method="post" class="new-conversation">
         <label for="chat_name">Nueva conversación:</label>
         <input type="text" name="chat_name" id="chat_name" placeholder="nombre">
         <button type="submit" class="fas fa-circle-plus" value="Crear" title="Crear una conversación">

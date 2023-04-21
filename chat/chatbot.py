@@ -12,7 +12,7 @@ import json
 import os
 
 import bson
-from mongo_connection import mongo, templates
+from utils.mongo_connection import mongo, templates
 import bson.json_util as json_util
 
 class Chat:

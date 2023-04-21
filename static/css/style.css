@@ -191,7 +191,30 @@ pre {
   .bold {
     font-weight: bold;
   }
+
+  .main-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 60%;
+  }
   
+  h1, h2 {
+    text-align: center;
+  }
+
+  .new-conversation {
+    text-align: center;
+    margin: 20px 0;
+  }
+  #lista-links {
+    max-height: 600px;
+    overflow-y: scroll;
+    background-color: #faf7df;
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 15px;
+  }
   @media screen and (max-width: 1024px) {
     .fas {
       font-size: 40px;

@@ -1,5 +1,5 @@
-from openai_api import Openai_api
-from chatbot import Chat
+from utils.openai_api import Openai_api
+from chat.chatbot import Chat
 import dotenv
 import os
 

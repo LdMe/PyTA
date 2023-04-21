@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask import render_template, redirect, url_for
-from pyTA2 import Pyta
+from chat.pyTA2 import Pyta
 from markdown import markdown
 
 
