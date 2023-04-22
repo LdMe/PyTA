@@ -69,6 +69,15 @@ class Chat {
         document.body.removeChild(element);
     }
 
+    downloadMessagesAsPDF() {
+        const chat_name = this.getChatName() + '.pdf';
+        const content = this.messages.filter(chat => chat.role == 'assistant').map(chat => chat.content).join("\n\n");
+        const doc = new jsPDF();
+        doc.text(content, 10, 10);
+        doc.save(chat_name);
+
+    }
+
     getLastMessagesByWordCount() {
         let lastMessages = [];
         let wordCountTotal = 0;

@@ -3,3 +3,5 @@ python-dotenv
 flask
 markdown
 pymongo
+pdfkit
+flask-cors

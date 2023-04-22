@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
 from flask import render_template, redirect, url_for
+from flask_cors import CORS
 from chat.pyTA2 import Pyta
 from markdown import markdown
 
 
 app = Flask(__name__)
+cors = CORS(app)
 pyta = Pyta()
 app.jinja_env.globals.update(markdown=markdown)
 
@@ -25,7 +27,10 @@ def templates():
 def get_templates():
     templates = pyta.get_templates()
     return jsonify(templates)
-
+@app.route("/api/chats",methods=['GET'])
+def get_chats():
+    chats = pyta.get_chat_names()
+    return jsonify(chats)
 @app.route("/api/templates",methods=['POST'])
 def add_template():
     data = request.get_json()

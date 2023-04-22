@@ -282,7 +282,7 @@ class ChatView {
         saveButton.value = 'Guardar';
         saveButton.addEventListener('click', async (event) => {
             event.preventDefault();
-            this.chat.downloadMessages();
+            this.chat.downloadMessagesAsPDF();
             return false;
         });
         wordCountLink.appendChild(wordCountLabel);

@@ -44,14 +44,15 @@
 .chat {
     width: 80%;
     margin: 0 auto;
+    text-align: start;
 }
 .chat-link {
     display: block;
 }
-pre {
-    border-radius: 15px ;
-    background-color: #f3f3f3;
+code {
+    border-radius: 5px ;
     padding: 10px;
+    margin:10px;
 }
 
 #nav {
