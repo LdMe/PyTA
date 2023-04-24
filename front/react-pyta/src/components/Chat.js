@@ -12,7 +12,7 @@ const Chat = ({ chatName }) => {
     const [chat, setChat] = useState(null);
     const [dragging, setDragging] = useState(false);
     const [draggingIndex, setDraggingIndex] = useState(null);
-
+    const [loading, setLoading] = useState(false);
     const getChat=() =>{
         setChat(null);
         axios.get(`http://localhost:5500/api/chat/${chatName}`)
@@ -30,19 +30,27 @@ const Chat = ({ chatName }) => {
         })
         .catch(error => console.log(error))
     };
-    const addMessage = (message) => {
-            axios.put(`http://localhost:5500/api/chat/${chatName}`, {
+    const addMessage = (event) => {
+        event.preventDefault();
+        const form = event.target.form;
+        const formData = new FormData(form);
+        const message = Object.fromEntries(formData);
+        const content = message.content;
+        if (!content) return;
+        const role = message.role;
+        axios.post(`http://localhost:5500/api/chat/${chatName}/add`, {
                 content: content,
                 role: role
-            })
-            .then(response => {
+        })
+        .then(response => {
                 console.log(response.data);
-                const temporalMessage  = {...message};
-                temporalMessage.content = content ? content : message.content;
-                temporalMessage.role = role ? role : message.role;
-                setMessage(temporalMessage);
-            });
+                getChat();
+                });
     };
+    const setMessage = (message) => {
+        setChat([...chat, message]);
+    };
+
     const swapMessages = (draggingIndex,targetIndex) => {
         if(draggingIndex === targetIndex) return;
         axios.put(`http://localhost:5500/api/chat/${chatName}/swap/${draggingIndex}/${targetIndex}`)
@@ -62,6 +70,18 @@ const Chat = ({ chatName }) => {
         setDragging(false);
         swapMessages(draggingIndex,id);
     }
+    const handleSend = (event) =>{
+        addMessage(event);
+        setLoading(true);
+        axios.post(`http://localhost:5500/api/chat/${chatName}`, {
+                numWords: 1000
+        })
+        .then(response => {
+                console.log(response.data);
+                getChat();
+                setLoading(false);
+                });
+    }
     useEffect(() => {
         getChat();
     }, []);
@@ -71,7 +91,6 @@ const Chat = ({ chatName }) => {
     const shadow = chat.role === 'nothing'  || dragging ? 'shadow' : '';
     return (
         <section className="chat">
-            
             {chat.map(message => {
                 return <Message 
                 key={message._id.$oid} 
@@ -83,7 +102,8 @@ const Chat = ({ chatName }) => {
                 handleDrop={handleDrop}
                  />}
             )}
-            <MessageForm onSubmit={getChat} />
+            {loading ? <h1>Esperando a la respuesta...</h1> : 
+            <MessageForm onSubmit={addMessage} onSend={handleSend} />}
         </section>
     );
 };

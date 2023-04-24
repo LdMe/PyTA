@@ -10,10 +10,10 @@ import { useState } from 'react';
 const MessageButtons = ({ handleDrag, handleEdit, handleDelete }) => {
     return (
         <div className="message-buttons">
-            <button onClick={handleDrag}><i className='fas fa-arrows-alt' title="Arrastrar mensaje"></i></button>
+            <button onClick={handleDrag} className='fas fa-arrows-alt' title="Arrastrar mensaje"></button>
 
-            <button onClick={handleEdit}><i className="fas fa-edit" title="Editar mensaje"></i></button>
-            <button onClick={handleDelete}><i className="fas fa-trash-alt" title="Eliminar mensaje"></i></button>
+            <button onClick={handleEdit} className="fas fa-edit" title="Editar mensaje"></button>
+            <button onClick={handleDelete} className="fas fa-trash-alt" title="Eliminar mensaje"></button>
         </div>
     );
 }

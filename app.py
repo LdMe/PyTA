@@ -6,7 +6,7 @@ from markdown import markdown
 
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, origins="*")
 pyta = Pyta()
 app.jinja_env.globals.update(markdown=markdown)
 
@@ -52,7 +52,7 @@ def chat_api(chat_name):
     chat = pyta.get_chat()
     return jsonify(chat)
 
-@app.route("/api/chat/<chat_name>",methods=['PUT'])
+@app.route("/api/chat/<chat_name>/add",methods=['POST'])
 def add_message(chat_name):
     message = request.get_json()
     if message["content"] == "":
@@ -122,4 +122,4 @@ def format_messages(chat):
     return chat
 
 # run app in 0.0.0.0:5000
-app.run(host='0.0.0.0', port=5000,debug=True)
+app.run(host='0.0.0.0', port=5500,debug=True)

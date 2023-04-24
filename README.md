@@ -1,24 +1,6 @@
 # PyTA - Python Teaching Assistant
 
-                            /\
-                            / \
-                           /   \
-                          /     \
-                         /       \
-                         |        |
-                         ╭────────╮
-                         |╭──────╮|
-                     ╭────┤  ◕◕  ├────╮
-                ╭────┤    | ╰┬┬╯ |    ├────╮
-                │         | ╰┴┴╯ |         │
-                │         ╰──────╯         │
-                │     ──────╮  ╭──────     │
-             ╭──┴───╮     ──│  │──     ╭───┴──╮
-             │ │  │ │     ──│  │──     │ │  │ │
-             │      │     ──│  │──     │      │
-             │      │ ╰─────┴──┴─────╯ │      │
-             │      ╰──────────────────╯      │
-             ╰────────────────────────────────╯
+![pyta](static/img/pyta.png)
        
 PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de enseñanza. 
 

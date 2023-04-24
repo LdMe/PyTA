@@ -1,0 +1,28 @@
+# Dockerfile para una aplicación de React
+# Imagen base
+
+FROM node:latest
+
+# Directorio de trabajo
+
+WORKDIR /app
+
+# Copiar el package.json y el package-lock.json
+
+COPY package*.json ./
+
+# Instalar dependencias
+
+RUN npm install
+
+# Copiar el resto de los archivos
+
+COPY . .
+
+# Exponer el puerto 3000
+
+EXPOSE 3000
+
+# Comando para ejecutar la aplicación
+
+CMD ["npm", "start"]

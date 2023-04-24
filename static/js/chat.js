@@ -96,8 +96,8 @@ class Chat {
     async addMessage(content, role,template="default") {
         const chat_name = this.getChatName();
         if (content.length != 0 ){
-            await fetch('/api/chat/' + chat_name, {
-                method: 'PUT',
+            await fetch('/api/chat/' + chat_name+'/add', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },

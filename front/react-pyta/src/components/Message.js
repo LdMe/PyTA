@@ -38,14 +38,20 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
         event.preventDefault();
         const content = event.target.content.value;
         const role = event.target.role.value;
+        updateOrCreateMessage(content,role);
+        setEdit(false);
+    };
+
+    const updateOrCreateMessage = (content,role) => {
         if(message._id){
             updateMessage(content,role);
         }
         else{
             createMessage(content,role);
         }
-        setEdit(false);
+
     };
+
     const handleClick = () => {
         if (shadow){
             const  id = message._id.$oid;
@@ -62,7 +68,6 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
             
         }
     };
-
     const updateMessage = ( content, role) => {
         axios.put(`http://localhost:5500/api/chat/${chatName}/update/${message._id.$oid}`, {
             content: content ? content : message.content,
@@ -92,7 +97,7 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
             setMessage(temporalMessage);
         });
     };
-        
+       
     const className = `message ${message.role} ${shadow}` + (selected ? ' selected' : '');
     if (edit){
         return (

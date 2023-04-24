@@ -4,10 +4,11 @@ contiene  el textarea para escribir el mensaje, un select para elegir el rol, ot
 
 */
 
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 
-const MessageForm = ({ message, onSubmit, onCancel }) => {
+const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
     const [templates, setTemplates] = useState([]);
+    const [newMessage, setNewMessage] = useState({content: "", role: "user"});
 
     useEffect(() => {
         if(message) return;
@@ -15,7 +16,30 @@ const MessageForm = ({ message, onSubmit, onCancel }) => {
             .then(response => response.json())
             .then(data => setTemplates(data));
     }, []);
+    const handleRoleChange = (event) => {
+        const form = event.target.form;
+        // add class to form to change the color of the message depending on the role
+        form.classList.remove('user', 'assistant', 'system','new');
+        form.classList.add(event.target.value);
+    };
+    const handleCancel = (event) => {
+        event.preventDefault();
+        
+        setNewMessage({content: "", role: "user"});
+        if (onCancel){
+            onCancel();
+        }
+    };
+
     let templateSelector = null;
+    let className = "new " + (message ? "" : 'message'); 
+    let sendButton = null;
+    if(message){
+        className += " " + message.role;
+    }else{
+        className += " " + newMessage.role;
+        sendButton = <button type="submit" className="fas fa-paper-plane" onClick={onSend} title="enviar mensaje" ></button>;
+    }
     if(!message){
         templateSelector = (
             <select name="template" >
@@ -26,17 +50,18 @@ const MessageForm = ({ message, onSubmit, onCancel }) => {
             </select>);
     }
     return (
-        <section className="message new">
-            <form className="message-form" id="message-form" onSubmit={onSubmit}>
-                <textarea name="content" placeholder="Escribe tu mensaje aquí" defaultValue={message ? message.content : ""}></textarea>
-                <select name="role" defaultValue={message ? message.role : 'user'}>
+        <section className={className}>
+            <form className="message-form" id="message-form" >
+                <textarea name="content" placeholder="Escribe tu mensaje aquí" defaultValue={message ? message.content : newMessage.content}></textarea>
+                <select name="role" defaultValue={message ? message.role : newMessage.role} onChange={handleRoleChange}>
                     <option value="user">Usuario</option>
                     <option value="assistant">PyTA</option>
                     <option value="system">Sistema</option>
                 </select>
                 {templateSelector}
-                <button type="submit">Guardar</button>
-                <button type="button" onClick={onCancel}>Cancelar</button>
+                <button type="submit" className='fas fa-save' onClick={onSubmit} title="guardar mensaje"></button>
+                <button type="button" className="fas fa-times" onClick={handleCancel} title="cancelar" ></button>
+                {sendButton}
             </form>
         </section>
     );
