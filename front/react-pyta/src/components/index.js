@@ -12,7 +12,7 @@ import axios from 'axios';
 const Index = () => {
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState('');
-  const [chat, setChat] = useState(null);
+  const [chatName, setChatName] = useState(null);
 
   // Obtener lista de chats desde el backend
   useEffect(() => {
@@ -34,12 +34,7 @@ const Index = () => {
       .catch(error => console.log(error))
   };
   const getChat = (chat_name) => {
-    axios.get(`http://localhost:5500/api/chat/${chat_name}`)
-        .then(response => {
-            console.log(response.data);
-            setChat(response.data);
-        })
-        .catch(error => console.log(error))
+    setChatName(chat_name);
   };
   const chatList = <section>
         <h1>PyTA</h1>
@@ -54,7 +49,7 @@ const Index = () => {
         </form>
         </section>;
   return (
-    chat ?  <Chat chat={chat}/>: chatList
+    chatName ?  <Chat chatName={chatName}/>: chatList
   );
 };
 

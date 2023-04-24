@@ -25,21 +25,17 @@
 .user {
 	background-color: #DCF8C6;
 }
-.user.shadow {
+.shadow:not(.selected) {
     opacity: 0.5;
 }
-
+.selected{
+  cursor: pointer;
+}
 .system {
 	background-color: #f9e8cd;
 }
-.system.shadow {
-    opacity: 0.5;
-}
 .assistant {
 	background-color: #ECE5DD;
-}
-.assistant.shadow {
-    opacity: 0.5;
 }
 .chat {
     width: 80%;
@@ -158,13 +154,13 @@ code {
   .fas {
     font-size: 24px;
   }
-  .fa-lock, .fa-save {
+  .fa-lock, .fa-save,.selected .fa-arrows-alt {
     color: #188231;
   }
-  .fa-lock:hover, .fa-save:hover {
+  .fa-lock:hover, .fa-save:hover, .selected .fa-arrows-alt:hover{
     color: #1bd446;
   }
-  
+
   .fa-edit {
     color: #8d6b22;
   }

@@ -86,6 +86,9 @@ class Pyta:
     def add_template(self,template_name,template,replace_word):
         Chat.create_template(template_name,template,replace_word)
 
+    def swap_messages(self,chat_name,message1,message2):
+        self.chatbot.swap_messages(chat_name,message1,message2)
+    
     def fill_template(self,template_name,text):
         print(template_name,flush=True)
         return Chat.fill_template(template_name,text)

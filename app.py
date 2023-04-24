@@ -92,6 +92,11 @@ def update_message(chat_name,id):
     pyta.update_message(chat_name,id,content,role)
     return jsonify(pyta.get_chat())
 
+@app.route("/api/chat/<chat_name>/swap/<idfrom>/<idto>",methods=['PUT'])
+def swap_messages(chat_name,idfrom,idto):
+    pyta.swap_messages(chat_name,idfrom,idto)
+    return jsonify(pyta.get_chat())
+
 @app.route("/api/chat/<chat_name>",methods=['DELETE'])
 def delete_chat(chat_name):
     pyta.delete_chat(chat_name)

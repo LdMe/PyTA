@@ -56,7 +56,21 @@ class Chat:
             new_message = {"role":message["role"],"content":message["content"]}
             mongo.db[self.chat_name].insert_one(new_message)
         self.load_chat()
+
+    def swap_messages(self,chat_name,idfrom, idto):
+        self.chat_name = chat_name
+        self.load_chat()
+        messages = self.get_messages()
+        print(messages[0],flush=True)
+        messagefrom = [message for message in messages if message["_id"]["$oid"] == idfrom][0]
+        messageto = [message for message in messages if message["_id"]["$oid"] == idto][0]
+        # insert messagefrom before mesageTo in the array and save it in the database replacing the original ones
+        messages.insert(messages.index(messageto),messages.pop(messages.index(messagefrom)))
+        self.save_chat(messages)
+
         
+        self.load_chat()
+
     def get_chat_names():
         return [chat for chat in mongo.db.list_collection_names()]  
     
