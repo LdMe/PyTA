@@ -2,22 +2,16 @@
 
 ![pyta](static/img/pyta.png)
        
-PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de enseñanza. 
+PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de profesores y estudiantes. Permite descargar las respuestas en formato Markdown y exportarlas a un archivo PDF (próximamente).
+
 
 ## Índice
 
 - [Puesta en marcha](#puesta-en-marcha)
+  - [.env](#env)
   - [Docker](#docker)
-    - [Script](#script)
-    - [Manual](#manual)
   - [Instalación con Python](#instalación-con-python)
 - [Uso](#uso)
-  - [Crear clases](#crear-clases)
-  - [Corregir ejercicios](#corregir-ejercicios)
-  - [Escribir libremente](#escribir-libremente)
-  - [Cambiar contexto](#cambiar-contexto)
-  - [Salir](#salir)
- - [Sugerencias de mejora / colaboración](#sugerencias-de-mejoras-y-colaboración)
 
 ---
 
@@ -58,8 +52,8 @@ Los contenedores de PyTA y mongodb se reiniciarán automáticamente, por lo que 
 
 ---
 
-### Instalación con Python
-Para poder poner en marcha el programa PyTA, se deben seguir los siguientes pasos:
+### Instalación con Python y React
+Si no deseamos usar docker, se deben seguir los siguientes pasos:
 
 1. Tener instalado Python 3.10 o superior.
 

@@ -13,6 +13,7 @@ app.jinja_env.globals.update(markdown=markdown)
 @app.route("/")
 def index():
     conversations = pyta.get_chat_names()
+    print(conversations,flush=True)
     return render_template('index.html', conversations=conversations)
 
 @app.route("/chat/<chat_name>",methods=['GET'])

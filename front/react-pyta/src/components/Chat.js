@@ -3,6 +3,8 @@ Componente que muestra una conversación entera, con todos los mensajes que cont
 */
 import React, { useState, useEffect } from 'react';
 import 'highlight.js/scss/vs2015.scss';
+//import 'highlight.js/scss/googlecode.scss';
+
 import axios from 'axios';
 
 import Message from './Message';

@@ -7,6 +7,7 @@ La lista de chats se obtiene del backend, y se actualiza cada vez que se crea un
 import React, { useState, useEffect } from 'react';
 import ChatListItem from './ChatListItem';
 import Chat from './Chat';
+import TemplateList from './TemplateList';
 import axios from 'axios';
 
 const Index = () => {
@@ -39,7 +40,7 @@ const Index = () => {
   const chatList = <section>
         <h1>PyTA</h1>
         <h2>Tu asistente inteligente</h2>
-        <img src="img/pyta.png" alt="Imagen" className="main-image"/>
+        <img src="/img/pyta.png" alt="Imagen" className="main-image"/>
         <ul id="lista-links">
             {chats.map(chat => <ChatListItem  key={chat} chat={chat}  getChat={getChat} />)}
         </ul>
@@ -48,8 +49,13 @@ const Index = () => {
             <button type="submit">Crear nuevo chat</button>
         </form>
         </section>;
+
   return (
-    chatName ?  <Chat chatName={chatName}/>: chatList
+    <section>
+      {chatName ?  <Chat chatName={chatName} />: chatList}
+      
+      <TemplateList />
+    </section>
   );
 };
 

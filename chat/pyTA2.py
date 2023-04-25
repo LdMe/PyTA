@@ -68,13 +68,8 @@ class Pyta:
     #Templates
     #-------------------------------------
     def get_templates(self):
-        template_names= Chat.get_template_names()
-        templates = []
-        for template_name in template_names:
-            template = self.get_template(template_name)
-            template = {"name":template_name,"content":template["content"],"replace_word":template["replace_word"]}
-            templates.append(template)
-        print ("templates",templates)
+        templates= Chat.get_templates()
+        print ("templates",templates,flush=True)
         return templates
     
     def get_template(self,template_name):

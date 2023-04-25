@@ -12,7 +12,7 @@ import json
 import os
 
 import bson
-from utils.mongo_connection import mongo, templates
+from utils.mongo_connection import mongo, templates_db
 import bson.json_util as json_util
 
 class Chat:
@@ -72,7 +72,7 @@ class Chat:
         self.load_chat()
 
     def get_chat_names():
-        return [chat for chat in mongo.db.list_collection_names()]  
+        return sorted([chat for chat in mongo.db.list_collection_names()])
     
     def delete_last_message(self):
         self.delete_last_messages(1)
@@ -148,27 +148,34 @@ class Chat:
     def get_last_message_assistant(self):
         return self.get_last_message_by_role("assistant")
 
-    def get_template_names():
-        return [template for template in templates.db.list_collection_names()]
+    def get_templates():
+        templates = [template for template in templates_db.db["templates"].find({},{
+            "_id": 1,
+            "name":1,
+            "content":1,
+            "replace_word":1
+             })]
+        return json.loads(json.dumps(templates, default=json_util.default))
 
     def get_template(template_name):
-        collection = templates.db[template_name]
+        collection = templates_db.db["templates"]
         template = collection.find_one({},
             {
             "_id": 1,
-            "replace_word":1,
-            "content":1
+            "name":1,
+            "content":1,
+            "replace_word":1
              })
         return template
     
     def create_template(template_name, content, replace_word):
-        templates.db[template_name].insert_one({"replace_word":replace_word,"content":content})
+        templates_db.db["templates"].insert_one({"name":template_name,"replace_word":replace_word,"content":content})
 
-    def delete_template(template_name):
-        templates.db[template_name].drop()
+    def delete_template(id):
+        templates_db.db["templates"].delete_one({"name":id})
 
-    def update_template(template_name, content, replace_word):
-        templates.db[template_name].update_one({"_id":template_name},{"$set":{"replace_word":replace_word,"content":content}})
+    def update_template(id,template_name, content, replace_word):
+        templates_db.db["templates"].update_one({"_id":id},{"$set":{"name":template_name,"replace_word":replace_word,"content":content}})
 
     def fill_template(template_name, text):
         template = Chat.get_template(template_name)
