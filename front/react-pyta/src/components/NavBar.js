@@ -1,4 +1,4 @@
-const Navbar = () => (
+const Navbar = ({navButtons}) => (
     <nav id="nav-main">
       <section id="nav">
         <ul>
@@ -8,7 +8,7 @@ const Navbar = () => (
           <li className="nav-link">
             <a className="fas fa-file-invoice nav-link" href="/templates" title="Plantillas"></a>
           </li>
-          {/*{% block nav_links %}{% endblock %}*/}
+          {navButtons.map(button => button)}
         </ul>
       </section>
     </nav>

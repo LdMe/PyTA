@@ -48,8 +48,6 @@ class Chat:
         mongo.db[self.chat_name].delete_many({})
 
     def save_chat(self,content):
-        print("saving chat",flush=True)
-        print(content,flush=True)
 
         self.clear_chat()
         for message in content:
@@ -61,7 +59,6 @@ class Chat:
         self.chat_name = chat_name
         self.load_chat()
         messages = self.get_messages()
-        print(messages[0],flush=True)
         messagefrom = [message for message in messages if message["_id"]["$oid"] == idfrom][0]
         messageto = [message for message in messages if message["_id"]["$oid"] == idto][0]
         # insert messagefrom before mesageTo in the array and save it in the database replacing the original ones
@@ -159,7 +156,8 @@ class Chat:
 
     def get_template(template_name):
         collection = templates_db.db["templates"]
-        template = collection.find_one({},
+        print(template_name,flush=True)
+        template = collection.find_one({"name":template_name},
             {
             "_id": 1,
             "name":1,
@@ -177,6 +175,7 @@ class Chat:
     def update_template(id,template_name, content, replace_word):
         templates_db.db["templates"].update_one({"_id":id},{"$set":{"name":template_name,"replace_word":replace_word,"content":content}})
 
-    def fill_template(template_name, text):
+    def fill_template(template_name, message):
         template = Chat.get_template(template_name)
-        return template["content"].replace(template["replace_word"],text)
+        print("message",message,flush=True)
+        return template["content"].replace(template["replace_word"],message)

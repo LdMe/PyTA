@@ -51,7 +51,7 @@ const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
     }
     return (
         <section className={className}>
-            <form className="message-form" id="message-form" >
+            <form className="message-form" id="message-form" onSubmit={onSubmit}>
                 <textarea name="content" placeholder="Escribe tu mensaje aquí" defaultValue={message ? message.content : newMessage.content}></textarea>
                 <select name="role" defaultValue={message ? message.role : newMessage.role} onChange={handleRoleChange}>
                     <option value="user">Usuario</option>
@@ -59,7 +59,7 @@ const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
                     <option value="system">Sistema</option>
                 </select>
                 {templateSelector}
-                <button type="submit" className='fas fa-save' onClick={onSubmit} title="guardar mensaje"></button>
+                <button type="submit" className='fas fa-save'  title="guardar mensaje"></button>
                 <button type="button" className="fas fa-times" onClick={handleCancel} title="cancelar" ></button>
                 {sendButton}
             </form>

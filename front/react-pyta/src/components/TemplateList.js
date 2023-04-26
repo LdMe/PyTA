@@ -44,7 +44,6 @@ const TemplateList = () => {
     }
 
     const templateList = <section>
-        <h2>Plantillas</h2>
         <ul id="lista-links">
             {templates.map(template => <TemplateListItem  key={template._id.$oid} template={template}  getTemplate={getTemplate} />)}
         </ul>
@@ -54,7 +53,11 @@ const TemplateList = () => {
         </form>
         </section>;
     return (
-        currentTemplate ?  <section className="chat"><Template template={currentTemplate} onClick={clearTemplate}/></section>: templateList
+        <section className="chat">
+
+            <h2>Plantillas</h2>
+            {currentTemplate ?  <Template template={currentTemplate} onClick={clearTemplate}/>: templateList}
+        </section>
     );
 }
 

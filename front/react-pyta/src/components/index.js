@@ -5,15 +5,18 @@ La lista de chats se obtiene del backend, y se actualiza cada vez que se crea un
 */
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import ChatListItem from './ChatListItem';
 import Chat from './Chat';
+import Navbar from './NavBar';
 import TemplateList from './TemplateList';
-import axios from 'axios';
 
 const Index = () => {
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState('');
   const [chatName, setChatName] = useState(null);
+  const [navButtons, setNavButtons] = useState([]);
 
   // Obtener lista de chats desde el backend
   useEffect(() => {
@@ -37,6 +40,9 @@ const Index = () => {
   const getChat = (chat_name) => {
     setChatName(chat_name);
   };
+  const addNavButton = (button) => {
+    setNavButtons([...navButtons, button]);
+  };
   const chatList = <section>
         <h1>PyTA</h1>
         <h2>Tu asistente inteligente</h2>
@@ -48,14 +54,22 @@ const Index = () => {
             <input type="text" value={newChat} onChange={event => setNewChat(event.target.value)} placeholder="Escribe el título del nuevo chat" />
             <button type="submit">Crear nuevo chat</button>
         </form>
+        <TemplateList />
         </section>;
 
   return (
-    <section>
-      {chatName ?  <Chat chatName={chatName} />: chatList}
-      
-      <TemplateList />
-    </section>
+    <div>
+      <header>
+        <Navbar navButtons={navButtons}/>
+      </header>
+      <main>
+        <section>
+          {chatName ?  <Chat chatName={chatName} addNavButton={addNavButton}/>: chatList}
+        </section>
+      </main>
+    </div>
+    
+    
   );
 };
 
