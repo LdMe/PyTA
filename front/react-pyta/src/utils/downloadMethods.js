@@ -9,18 +9,22 @@ const downloadAsMarkdown = (chatName,chat) => {
     const file = new Blob([text], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
     element.download = `${chatName}.md`;
+    element.id = 'downloadMD';
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
+    document.body.removeChild(element);
 
 }
 const downloadAsPDF = async(chatName) => {
+    
     const element = document.createElement('a');
-    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdf = new jsPDF('p', 'pt', 'a4');
     const width = pdf.internal.pageSize.getWidth();
     
     const highlight = Array.from(document.querySelectorAll('div.assistant')).map((element) => element.outerHTML)
+    
     const html =renderToStaticMarkup(
-        <div style={{"width":`${width * 5  -100}px`, "margin": "auto"}}>
+        <div style={{"width":`${width * 2.5  -100}px`, "margin": "auto"}}>
          <style>
             {`
             .assistant{
@@ -30,7 +34,6 @@ const downloadAsPDF = async(chatName) => {
             * {
                 vertical-align: baseline;
                 padding-bottom: 5px;
-                letter-spacing: 0.1px;
             }
             `}
             
@@ -40,21 +43,23 @@ const downloadAsPDF = async(chatName) => {
         );
     await pdf.html(html, {
         callback: function (pdf) {
-            const pageCount = pdf.internal.getNumberOfPages(); //Total Page Number
             
-            pdf.save(`${chatName}.pdf`);
         },
         autoPaging: 'text',
         margin: [12, 6, 15, 8],
-        html2canvas: { scale: 0.2 },
+        html2canvas: { scale: 0.4 },
 
     });
     
     element.href = pdf.output('bloburl');
-
+    element.id="downloadPDF";
     element.download = `${chatName}.pdf`;
     document.body.appendChild(element); // Required for this to work in FireFox
+    
     element.click();
+    document.body.removeChild(element);
+
+
 
 }
 

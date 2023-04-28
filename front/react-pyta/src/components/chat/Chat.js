@@ -54,18 +54,25 @@ const Chat = ({ chatName ,goBack}) => {
     };
     const addMessage = async(message) => {
         const response = await addM(chatName,message);
+        if(response){
         setChat(response);
         setHasNewMessage(true);
+        }
+
     };
     const downloadAsMarkdown = () => {
         downloadMD(chatName,chat);
 
     }
     
-    const downloadAsPDF = async() => {
+    const downloadAsPDF = async(event) => {
+        event.preventDefault();
+        console.log("downloading")
         setDownloading(true);
         await downloadPDF(chatName,chat);
         setDownloading(false);
+        setHasNewMessage(true);
+        goBack(true);
     }
     const swapMessages = async (draggingIndex,targetIndex) => {
         const response = await swapM(chatName,draggingIndex,targetIndex);
@@ -83,7 +90,7 @@ const Chat = ({ chatName ,goBack}) => {
     }
     const handleSend = async(message) =>{
        
-        addMessage(message);
+        await addMessage(message);
         console.log(lastMessage.current)
         lastMessage.current.scrollIntoView({ behavior: 'smooth' });
         setLoading(true);

@@ -35,7 +35,7 @@ const addMessage = (chatName,message) => {
         }
         const content = message.content;
         const template = message.template;
-        if (!content && template==="") return;
+        if (!content && template==="") resolve(null);
         const role = message.role;
         axios.post(`http://localhost:5500/api/chat/${chatName}/add`, {
                 content: content,

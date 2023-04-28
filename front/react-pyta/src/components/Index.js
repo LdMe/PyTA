@@ -9,12 +9,12 @@ import axios from 'axios';
 
 import ChatListItem from './chat/ChatListItem';
 import Chat from './chat/Chat';
-import TemplateList from './TemplateList';
+import TemplateList from './template/TemplateList';
 const Index = () => {
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState('');
   const [chatName, setChatName] = useState(null);
-
+  const [chatId, setChatId] = useState(1);
   // Obtener lista de chats desde el backend
   useEffect(() => {
     axios.get('http://localhost:5500/api/chats')
@@ -31,6 +31,14 @@ const Index = () => {
   };
   const getChat = (chat_name) => {
     setChatName(chat_name);
+  };
+  const clearChat = (reset) => {
+    if (reset===true) {
+      setChatId(chatId + 1);
+    }
+    else {
+      setChatName(null);
+    }
   };
   const chatList = <section>
         <h1>PyTA</h1>
@@ -51,7 +59,7 @@ const Index = () => {
     <div >
       <main>
         <section>
-          {chatName ?  <Chat chatName={chatName} goBack={()=>setChatName(null)} />: chatList}
+          {chatName ?  <Chat key={chatId} chatName={chatName} goBack={clearChat} />: chatList}
         </section>
       </main>
     </div>

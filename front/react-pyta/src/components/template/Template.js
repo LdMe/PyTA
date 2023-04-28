@@ -2,11 +2,11 @@
 import { useState } from "react";
 
 const Template = ({ template, onClick}) => {
-
+    const content = template.content.replace(template.replace_word, "______");
     return (
-        <section className="message system" onClick={onClick}>
+        <section className="new-conversation pointer" onClick={onClick}>
             <h1>{template.name}</h1>
-            <p>{template.content}</p>
+            <p>{content}</p>
         </section>
     );
 }
