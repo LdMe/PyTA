@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import MessageButtons from './MessageButtons';
 import MessageForm from './MessageForm';
+import '../../css/Message.css';
 
 const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDelete}) => {
     const [edit, setEdit] = useState(false);
@@ -34,11 +35,9 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
         const id = message._id.$oid;
         onDelete(id);
     };
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const content = event.target.content.value;
-        const role = event.target.role.value;
-        updateOrCreateMessage(content,role);
+    const handleSubmit = (message) => {
+        
+        updateOrCreateMessage(message);
         setEdit(false);
     };
 
@@ -56,7 +55,6 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
         if (shadow){
             const  id = message._id.$oid;
             handleDrop(id);
-            console.log("click",id);
             setSelected(false);
         }
     }; 
@@ -68,13 +66,14 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
             
         }
     };
-    const updateMessage = ( content, role) => {
+    const updateMessage = ( message) => {
+        const content = message.content;
+        const role = message.role;
         axios.put(`http://localhost:5500/api/chat/${chatName}/update/${message._id.$oid}`, {
             content: content ? content : message.content,
             role: role ? role : message.role
         })
         .then(response => {
-            console.log(response.data);
             const temporalMessage  = {...message};
             temporalMessage.content = content ? content : message.content;
             temporalMessage.role = role ? role : message.role;
@@ -90,7 +89,6 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
             role: role
         })
         .then(response => {
-            console.log(response.data);
             const temporalMessage  = {...message};
             temporalMessage.content = content ? content : message.content;
             temporalMessage.role = role ? role : message.role;
@@ -108,9 +106,11 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
             </section>
         );
     }
-    const html = renderToStaticMarkup(<MarkdownView markdown={message.content} className={message.role} />);
+    let html = renderToStaticMarkup(<MarkdownView markdown={message.content} className={message.role} />);
+    // find text inside ` and ` and replace it with <code>...</code>
+    //html = html.replace(/`([^`]+)`/g, '<codes className="inline-code">$1</codes>');
     return (
-        <section className={className} id={message._id.$oid} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut} onClick={handleClick}>
+        <section  className={className} id={message._id.$oid} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut} onClick={handleClick}>
             <article>
                 <MessageButtons message={message} handleDrag={handleDragStart} handleEdit={handleEdit} handleDelete={handleDelete}/>
                 <Highlight  innerHTML={true}>

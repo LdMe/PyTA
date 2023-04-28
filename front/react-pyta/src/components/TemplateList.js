@@ -27,11 +27,16 @@ const TemplateList = () => {
     // Función para crear un nuevo template
     const handleNewTemplate = event => {
         event.preventDefault();
-        axios.post('http://localhost:5500/api/create-template', { title: newTemplate })
+        axios.post('http://localhost:5500/api/templates', 
+        { name: newTemplate.name ,
+            content: newTemplate.content,
+            replaceWord: newTemplate.replaceWord
+        })
         .then(response => {
-            setTemplates([...templates, response.data]);
+            console.log("data", response.data)
+            setTemplates(response.data);
 
-            setNewTemplate('');
+            setNewTemplate({name: '', content: '', replaceWord: ''});
         })
         .catch(error => console.log(error))
     }
@@ -39,21 +44,32 @@ const TemplateList = () => {
         const template = templates.find(template => template._id.$oid === id);
         setTemplate(template);
     }
+    const handleDeleteTemplate = (template) => {
+        axios.delete(`http://localhost:5500/api/templates/${template.name}`)
+        .then(response => {
+            console.log(response.data);
+            setTemplates(response.data);
+        })
+        .catch(error => console.log(error))
+    }
     const clearTemplate = () => {
         setTemplate(null);
     }
 
     const templateList = <section>
         <ul id="lista-links">
-            {templates.map(template => <TemplateListItem  key={template._id.$oid} template={template}  getTemplate={getTemplate} />)}
+            {templates.map(template => <TemplateListItem  key={template._id.$oid} template={template}  getTemplate={getTemplate} deleteTemplate={handleDeleteTemplate} />)}
         </ul>
         <form onSubmit={handleNewTemplate} className="new-conversation">
-            <input type="text" value={newTemplate} onChange={event => setNewTemplate(event.target.value)} placeholder="Escribe el título del nuevo template" />
-            <button type="submit">Crear nuevo template</button>
+            <input type="text" name="name" value={newTemplate.name} onChange={event => setNewTemplate(newTemplate=>({...newTemplate, name: event.target.value}))} placeholder="Escribe el título del nuevo template" title="título de la plantilla"/>
+            <input type="text" name="replaceWord" value={newTemplate.replaceWord} onChange={event => setNewTemplate(newTemplate=>({...newTemplate, replaceWord: event.target.value}))} placeholder="Escribe la palabra o frase a reemplazar" title="palabra a reemplazar"/>
+            <textarea type="text" name="content" value={newTemplate.content} onChange={event => setNewTemplate(newTemplate=>({...newTemplate, content: event.target.value}))} placeholder="Escribe el contenido" title="contenido de la plantilla. Reemplazará la palabra clave por el texto que se escriba en el mensaje. Si no hay coincidencias, solo se guardará el contenido de la plantilla" />
+            
+            <button type="submit"  title="crear una nueva plantilla">Crear nuevo template</button>
         </form>
         </section>;
     return (
-        <section className="chat">
+        <section >
 
             <h2>Plantillas</h2>
             {currentTemplate ?  <Template template={currentTemplate} onClick={clearTemplate}/>: templateList}

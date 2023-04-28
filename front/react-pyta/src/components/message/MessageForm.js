@@ -4,30 +4,49 @@ contiene  el textarea para escribir el mensaje, un select para elegir el rol, ot
 
 */
 
-import  { useState, useEffect } from 'react';
+import  { useState, useEffect,useRef } from 'react';
 
 const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
     const [templates, setTemplates] = useState([]);
-    const [newMessage, setNewMessage] = useState({content: "", role: "user"});
-
+    const [newMessage, setNewMessage] = useState({content: "", role: "user",template:""});
+    const formRef = useRef(null);
     useEffect(() => {
-        if(message) return;
+        if(message) {
+            setNewMessage(message);
+            return;
+        }
         fetch('http://localhost:5500/api/templates')
             .then(response => response.json())
             .then(data => setTemplates(data));
     }, []);
-    const handleRoleChange = (event) => {
-        const form = event.target.form;
-        // add class to form to change the color of the message depending on the role
-        form.classList.remove('user', 'assistant', 'system','new');
-        form.classList.add(event.target.value);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (onSubmit){
+            onSubmit(newMessage);
+        }
+        resetForm();
     };
+    const handleRoleChange = (event) => {
+        setNewMessage({...newMessage, role: event.target.value});
+    };
+    const handleTemplateChange = (event) => {
+        setNewMessage({...newMessage, template: event.target.value});
+    };
+    const resetForm =() => {
+        setNewMessage({content: "", role: "user",template:""});
+    }
     const handleCancel = (event) => {
         event.preventDefault();
-        
-        setNewMessage({content: "", role: "user"});
+        resetForm();
         if (onCancel){
             onCancel();
+        }
+    };
+    const handleSend = (event) => {
+        event.preventDefault();
+        if (onSend){
+            onSend(newMessage);
         }
     };
 
@@ -38,11 +57,11 @@ const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
         className += " " + message.role;
     }else{
         className += " " + newMessage.role;
-        sendButton = <button type="submit" className="fas fa-paper-plane" onClick={onSend} title="enviar mensaje" ></button>;
+        sendButton = <button type="submit" className="fas fa-paper-plane" onClick={handleSend} title="enviar mensaje" ></button>;
     }
     if(!message){
         templateSelector = (
-            <select name="template" >
+            <select name="template" onChange={handleTemplateChange} value={newMessage.template}>
                 <option value="">Sin plantilla</option>
                 {templates.map(template => (
                     <option key={template.name} value={template.name} title={"Plantilla:\n---\n"+template.content+"\n---\npalabra a reemplazar: \n---\n"+template.replace_word+"\n---\n"}>{template.name} </option>
@@ -51,9 +70,9 @@ const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
     }
     return (
         <section className={className}>
-            <form className="message-form" id="message-form" onSubmit={onSubmit}>
-                <textarea name="content" placeholder="Escribe tu mensaje aquí" defaultValue={message ? message.content : newMessage.content}></textarea>
-                <select name="role" defaultValue={message ? message.role : newMessage.role} onChange={handleRoleChange}>
+            <form className={"message-form " +newMessage.role} id="message-form" onSubmit={handleSubmit} ref={formRef}>
+                <textarea name="content" placeholder="Escribe tu mensaje aquí" value={newMessage.content} onChange={(event) => setNewMessage({...newMessage, content: event.target.value})}></textarea>
+                <select name="role" value={newMessage.role} onChange={handleRoleChange}>
                     <option value="user">Usuario</option>
                     <option value="assistant">PyTA</option>
                     <option value="system">Sistema</option>

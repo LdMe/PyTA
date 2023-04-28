@@ -5,3 +5,4 @@ markdown
 pymongo
 pdfkit
 flask-cors
+flask-swagger
