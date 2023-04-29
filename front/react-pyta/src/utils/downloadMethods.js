@@ -2,7 +2,6 @@ import jsPDF from "jspdf";
 import { renderToStaticMarkup } from 'react-dom/server';
 
 const downloadAsMarkdown = (chatName,chat) => {
-    console.log(chat)
     const text = chat.filter(message => message.role === 'assistant').map(message => message.content).join('\n');
     
     const element = document.createElement('a');
@@ -32,7 +31,6 @@ const downloadAsPDF = async(chatName) => {
         let code = Array.from(element.querySelectorAll('code')) ;
         if (code){
             code = code.map((element) => {
-                console.log("code", element.innerHTML)
                 const text = element.innerHTML.split("\n")
                 const newText = text.reduce((acc, line, index) => {
                     line = `<span class="line">${line}</span>\n`
@@ -48,7 +46,7 @@ const downloadAsPDF = async(chatName) => {
         return element.outerHTML;
     })
     const html =renderToStaticMarkup(
-        <div style={{"width":`${width * 2  -100}px`, "margin": "auto", "compress":true}}>
+        <div style={{"width":`${width * 2  -70}px`, "margin": "auto"}}>
          <style>
             {`
             .assistant{
@@ -80,12 +78,14 @@ const downloadAsPDF = async(chatName) => {
     element2.id = 'downloadHTML';
     document.body.appendChild(element2); // Required for this to work in FireFox
     element2.click();
+    document.body.removeChild(element2);
+
     await pdf.html(html, {
         callback: function (pdf) {
             
         },
         autoPaging: 'text',
-        margin: [12, 6, 15, 8],
+        margin: [12, 8, 15, 8],
         html2canvas: { scale: 0.5 },
 
     });

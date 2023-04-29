@@ -15,6 +15,7 @@ class Pyta:
     def get_response(self,chat=None,num_words=1500):
         if not chat:
             chat = self.chatbot.get_clean_messages(num_words=num_words)
+            print("chat",chat,flush=True)
         try:
             response = self.api.get_response_multi(chat)
         except Exception as e:

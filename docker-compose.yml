@@ -5,6 +5,8 @@ services:
       context: ./front/react-pyta
       dockerfile: dockerfile
     container_name: react_pyta
+    env_file:
+      - .env
     networks:
       - pyta_network
     ports:

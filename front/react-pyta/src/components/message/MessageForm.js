@@ -5,7 +5,7 @@ contiene  el textarea para escribir el mensaje, un select para elegir el rol, ot
 */
 
 import  { useState, useEffect,useRef } from 'react';
-
+import { getTemplates } from '../../utils/template';
 const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
     const [templates, setTemplates] = useState([]);
     const [newMessage, setNewMessage] = useState({content: "", role: "user",template:""});
@@ -15,9 +15,10 @@ const MessageForm = ({ message, onSubmit, onCancel,onSend }) => {
             setNewMessage(message);
             return;
         }
-        fetch('http://localhost:5500/api/templates')
-            .then(response => response.json())
-            .then(data => setTemplates(data));
+        getTemplates()
+        .then(response => {
+            setTemplates(response)
+        })
     }, []);
 
     const handleSubmit = (event) => {

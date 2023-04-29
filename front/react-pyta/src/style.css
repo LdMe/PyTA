@@ -1,47 +1,6 @@
 
 
-#nav {
-    background-color: #333; /* color del fondo del navbar */
-    height: 50px; /* altura del navbar */
-    display: flex; /* convierte los elementos en línea */
-    
-    flex-direction: row;
-  }
-#nav-main {
-    /* sticky navbar */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    opacity: 0.9;
-}
- #nav ul {
-    list-style: none; /* elimina las viñetas de la lista */
-    margin: 0; /* elimina los márgenes predeterminados de la lista */
-    padding: 0; /* elimina los espacios predeterminados dentro y fuera de la lista */
-    display: flex; /* convierte los elementos en línea */
-    justify-content: space-between;
-    width: 100%;
-  }
-  
- #nav li, .nav-buttons {
-    margin: 10px 10px; /* márgenes a la izquierda y derecha para separar los elementos */
-  }
-  
-#nav  a,#nav span, .nav-link {
-    color: white; /* color del texto de los links */
-    text-decoration: none; /* elimina la subraya del texto de los links */
-    font-weight: bold; /* establece el peso de la fuente en negrita */
-  }
-#nav a {
-    display: block; /* convierte los links en bloques para ajustar el espacio interno */
-}
 
-  
- #nav a:hover {
-    background-color: #555; /* color de fondo del hover de los links */
-  }
 
   #lista-links {
     display: flex;
@@ -145,6 +104,7 @@
     display: block;
     margin: 0 auto;
     max-width: 50%;
+    max-height: 50vh;
   }
   
   h1, h2 {
@@ -166,16 +126,25 @@
   }
   @media screen and (max-width: 1024px) {
     .fas {
-      font-size: 40px;
+      font-size: 60px;
+      margin: 0 10px;
+    }
+    .fas:hover {
+      font-size: 80px;
     }
     #nav {
-      height: 80px;
+      height: 90px;
     }
     main {
       margin-top: 80px;
+      margin-bottom: 120px;
     }
     body {
-      font-size: 1.5rem;
+      font-size: 2.5rem;
+    }
+    select {
+      font-size: 2.5rem;
+      width: 50%;
     }
   }
     

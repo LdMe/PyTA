@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import TemplateListItem from './TemplateListItem';
-import Template from './Template';
+import { getTemplates,createTemplate,deleteTemplate } from '../../utils/template';
 
 const TemplateList = () => {
     const [templates, setTemplates] = useState([]);
@@ -15,9 +15,10 @@ const TemplateList = () => {
 
     // Obtener lista de templates desde el backend
     useEffect(() => {
-        axios.get('http://localhost:5500/api/templates')
+        
+        getTemplates()
         .then(response => {
-            setTemplates(response.data)
+            setTemplates(response)
         })
         .catch(error => console.log(error))
     }
@@ -27,14 +28,9 @@ const TemplateList = () => {
     // Función para crear un nuevo template
     const handleNewTemplate = event => {
         event.preventDefault();
-        axios.post('http://localhost:5500/api/templates', 
-        { name: newTemplate.name ,
-            content: newTemplate.content,
-            replaceWord: newTemplate.replaceWord
-        })
+        createTemplate(newTemplate)
         .then(response => {
-            console.log("data", response.data)
-            setTemplates(response.data);
+            setTemplates(response);
 
             setNewTemplate({name: '', content: '', replaceWord: ''});
         })
@@ -45,11 +41,8 @@ const TemplateList = () => {
         setTemplate(template);
     }
     const handleDeleteTemplate = (template) => {
-        axios.delete(`http://localhost:5500/api/templates/${template.name}`)
-        .then(response => {
-            console.log(response.data);
-            setTemplates(response.data);
-        })
+        deleteTemplate(template)
+        .then(response => setTemplates(response))
         .catch(error => console.log(error))
     }
     const clearTemplate = () => {

@@ -7,11 +7,12 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { useState } from 'react';
 import axios from 'axios';
 
+import {updateMessage as updateM,createMessage as createM} from '../../utils/message';
 import MessageButtons from './MessageButtons';
 import MessageForm from './MessageForm';
 import '../../css/Message.css';
 
-const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDelete}) => {
+const Message = ({ originalMessage,chatName,shadow ,moving, handleDrag,handleDrop, onDelete}) => {
     const [edit, setEdit] = useState(false);
     const [selected,setSelected] = useState(false);
     const [message,setMessage] = useState(originalMessage);
@@ -37,29 +38,19 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
     };
     const handleSubmit = (message) => {
         
-        updateOrCreateMessage(message);
+        updateMessage(message);
         setEdit(false);
     };
 
-    const updateOrCreateMessage = (content,role) => {
-        if(message._id){
-            updateMessage(content,role);
-        }
-        else{
-            createMessage(content,role);
-        }
-
-    };
-
     const handleClick = () => {
-        if (shadow){
+        if (moving){
             const  id = message._id.$oid;
             handleDrop(id);
             setSelected(false);
         }
     }; 
     const handleDragStart = () => {
-        if (!shadow){
+        if (!moving){
             const  id = message._id.$oid;
             handleDrag(id);
             setSelected(true);
@@ -67,34 +58,16 @@ const Message = ({ originalMessage,chatName,shadow , handleDrag,handleDrop, onDe
         }
     };
     const updateMessage = ( message) => {
-        const content = message.content;
-        const role = message.role;
-        axios.put(`http://localhost:5500/api/chat/${chatName}/update/${message._id.$oid}`, {
-            content: content ? content : message.content,
-            role: role ? role : message.role
-        })
+        updateM(chatName,message)
         .then(response => {
-            const temporalMessage  = {...message};
-            temporalMessage.content = content ? content : message.content;
-            temporalMessage.role = role ? role : message.role;
+            const temporalMessage  = response.find(m => m._id.$oid === message._id.$oid);
+            console.log(temporalMessage)
             setMessage(temporalMessage);
             
         })
         .catch(error => console.log(error))
     };
 
-    const createMessage = ( content, role) => {
-        axios.put(`http://localhost:5500/api/chat/${chatName}`, {
-            content: content,
-            role: role
-        })
-        .then(response => {
-            const temporalMessage  = {...message};
-            temporalMessage.content = content ? content : message.content;
-            temporalMessage.role = role ? role : message.role;
-            setMessage(temporalMessage);
-        });
-    };
        
     const className = `message ${message.role} ${shadow}` + (selected ? ' selected' : '');
     if (edit){

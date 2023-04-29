@@ -1,8 +1,20 @@
 import axios from 'axios';
 
+const HOST_URL = `http://${process.env.REACT_APP_BACKEND_IP ? process.env.REACT_APP_BACKEND_IP : 'localhost'}:5500/api`;
+
+const getChats = () => {
+    console.log("url",`${HOST_URL}`)
+    return new Promise((resolve,reject)=>{
+    axios.get(`${HOST_URL}/chats`)
+      .then(response => {
+            resolve(response.data);
+      })
+      .catch(error => reject(error));
+    });
+};
 const getChat=(chatName) =>{
     return new Promise((resolve,reject)=>{
-    axios.get(`http://localhost:5500/api/chat/${chatName}`)
+    axios.get(`${HOST_URL}/chat/${chatName}`)
     .then(response => {
         resolve(response.data);
     })
@@ -11,17 +23,15 @@ const getChat=(chatName) =>{
 };
 const deleteChat = (chatName) => {
     return new Promise((resolve,reject)=>{
-    axios.delete(`http://localhost:5500/api/chat/${chatName}`)
+    axios.delete(`${HOST_URL}/chat/${chatName}`)
       .then(response => resolve(response.data))
       .catch(error => reject(error));
     });
 };
 const deleteMessage = (chatName,messageId) => {
-    console.log("delete");
     return new Promise((resolve,reject)=>{
-    axios.delete(`http://localhost:5500/api/chat/${chatName}/delete/${messageId}`)
+    axios.delete(`${HOST_URL}/chat/${chatName}/delete/${messageId}`)
     .then(response => {
-        console.log (response.data);
         resolve(response.data);
     })
     .catch(error => reject(error));
@@ -31,8 +41,7 @@ const deleteMessage = (chatName,messageId) => {
 const addMessage = (chatName,message) => {
     return new Promise((resolve,reject)=>{
         if (!message) {
-            const form = document.forms[document.forms.length-1];
-            console.log("form",form)
+            const form = document.forms[document.forms.length-2];
             const content = form.elements["content"].value;
             const role = form.elements["role"].value;
             const template = form.elements["template"].value;
@@ -43,7 +52,7 @@ const addMessage = (chatName,message) => {
         const template = message.template;
         if (!content && template==="") resolve(null);
         const role = message.role;
-        axios.post(`http://localhost:5500/api/chat/${chatName}/add`, {
+        axios.post(`${HOST_URL}/chat/${chatName}/add`, {
                 content: content,
                 role: role,
                 template: template
@@ -56,18 +65,18 @@ const addMessage = (chatName,message) => {
 const swapMessages = (chatName,draggingIndex,targetIndex) => {
     return new Promise((resolve,reject)=>{
         if(draggingIndex === targetIndex) return;
-        axios.put(`http://localhost:5500/api/chat/${chatName}/swap/${draggingIndex}/${targetIndex}`)
+        axios.put(`${HOST_URL}/chat/${chatName}/swap/${draggingIndex}/${targetIndex}`)
         .then(response => {
             resolve(response.data);
         })
         .catch(error => reject(error));
     });
 };
-const ask = (chatName) =>{
+const ask = (chatName,wordCount=1000) =>{
     return new Promise((resolve,reject)=>{
         
-        axios.post(`http://localhost:5500/api/chat/${chatName}`, {
-                numWords: 1000
+        axios.post(`${HOST_URL}/chat/${chatName}`, {
+                numWords: wordCount
         })
         .then(response => {
             resolve(response.data);
@@ -75,4 +84,21 @@ const ask = (chatName) =>{
         .catch(error => reject(error));
     });
 }
-export  {getChat,deleteChat,deleteMessage,addMessage,swapMessages,ask};
+
+const getLastMessagesByWordCount = (chat,wordCount) =>{
+    if (!chat) return [];
+    let count = 0;
+    let messages = [];
+    for (let i = chat.length-1; i >= 0; i--) {
+        const message = chat[i];
+        const words = message.content.split(" ");
+        count += words.length;
+        if (count >= wordCount) break;
+        messages.push(message);
+    }
+    messages = messages.reverse();
+    return(messages);
+};
+
+
+export  {getChats,getChat,deleteChat,deleteMessage,addMessage,swapMessages,ask,getLastMessagesByWordCount};

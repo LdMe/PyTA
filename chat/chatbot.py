@@ -102,9 +102,9 @@ class Chat:
         messages = []
         for message in reversed(self.messages):
             words += len(message["content"].split(" "))
-            messages.append(message)
             if words >= n:
                 return reversed(messages)
+            messages.append(message)
         
         return reversed(messages)
     

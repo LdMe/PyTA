@@ -74,10 +74,13 @@ def add_message(chat_name):
 @app.route("/api/chat/<chat_name>",methods=['POST'])
 def get_response(chat_name):
     data = request.get_json()
-    num_words = 1500
-    if "num_words" in data:
-        num_words = int(data["num_words"])
+    print("data:",data,flush=True)
+    num_words = 1000
+    if "numWords" in data.keys():
+        print("yesss")
+        num_words = int(data["numWords"])
     pyta.load_chat(chat_name)
+    print("numWords:",num_words,flush=True)
     pyta.get_response(num_words=num_words)
     return jsonify(pyta.get_chat())
 

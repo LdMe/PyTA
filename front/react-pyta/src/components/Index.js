@@ -10,6 +10,7 @@ import axios from 'axios';
 import ChatListItem from './chat/ChatListItem';
 import Chat from './chat/Chat';
 import TemplateList from './template/TemplateList';
+import {getChats} from '../utils/chat';
 const Index = () => {
   const [chats, setChats] = useState([]);
   const [newChat, setNewChat] = useState('');
@@ -17,11 +18,11 @@ const Index = () => {
   const [chatId, setChatId] = useState(1);
   // Obtener lista de chats desde el backend
   useEffect(() => {
-    axios.get('http://localhost:5500/api/chats')
-      .then(response => {
-        setChats(response.data)
-      })
-      .catch(error => console.log(error))
+    getChats()
+    .then(response => {
+      setChats(response)
+    })
+    .catch(error => console.log(error))
   }, []);
 
   // Función para crear un nuevo chat

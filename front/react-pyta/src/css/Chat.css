@@ -78,3 +78,8 @@ h1 {
 .pointer:hover {
     cursor: pointer;
 }
+
+.danger {
+    border : 2px solid red;
+    background-color: #fcdf5f;
+}

@@ -23,6 +23,9 @@ COPY . .
 
 EXPOSE 3000
 
+# Añadir variables de entorno
+
+ENV REACT_APP_BACKEND_IP=192.168.1.130
 # Comando para ejecutar la aplicación
 
 CMD ["npm", "start"]

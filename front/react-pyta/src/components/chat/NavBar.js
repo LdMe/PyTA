@@ -1,3 +1,5 @@
+import '../../css/NavBar.css';
+
 const Navbar = ({navButtons}) => (
     <nav id="nav-main">
       <section id="nav">
@@ -5,7 +7,9 @@ const Navbar = ({navButtons}) => (
           {navButtons.map(button => {
             return ( 
               <li key={button.title} className="nav-link">
-                <a className={`nav-link fas ${button.icon}`}title={button.title} onClick={button.onClick}></a>
+                <a className={button.icon !=='' ? `nav-link fas ${button.icon}`:''}title={button.title} onClick={button.onClick}>
+                  {button.html ? button.html : ''}
+                </a>
               </li>
             )
           })}
