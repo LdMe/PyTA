@@ -9,7 +9,13 @@ const getChat=(chatName) =>{
     .catch(error => reject(error));
     });
 };
-
+const deleteChat = (chatName) => {
+    return new Promise((resolve,reject)=>{
+    axios.delete(`http://localhost:5500/api/chat/${chatName}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error));
+    });
+};
 const deleteMessage = (chatName,messageId) => {
     console.log("delete");
     return new Promise((resolve,reject)=>{
@@ -69,4 +75,4 @@ const ask = (chatName) =>{
         .catch(error => reject(error));
     });
 }
-export  {getChat,deleteMessage,addMessage,swapMessages,ask};
+export  {getChat,deleteChat,deleteMessage,addMessage,swapMessages,ask};

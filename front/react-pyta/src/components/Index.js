@@ -32,6 +32,9 @@ const Index = () => {
   const getChat = (chat_name) => {
     setChatName(chat_name);
   };
+  const handleDeleteChat = (chat) => {
+    setChats (chats.filter(c => c !== chat));
+  };
   const clearChat = (reset) => {
     if (reset===true) {
       setChatId(chatId + 1);
@@ -46,7 +49,7 @@ const Index = () => {
         <img src="/img/pyta.png" alt="Imagen" className="main-image"/>
         <h2>Conversaciones</h2>
         <ul id="lista-links">
-            {chats.map(chat => <ChatListItem  key={chat} chat={chat}  getChat={getChat} />)}
+            {chats.map(chat => <ChatListItem  key={chat} chat={chat}  getChat={getChat} onDelete={handleDeleteChat}/>)}
         </ul>
         <form onSubmit={handleNewChat} className="new-conversation ">
             <input type="text" value={newChat} onChange={event => setNewChat(event.target.value)} placeholder="Escribe el título del nuevo chat" />

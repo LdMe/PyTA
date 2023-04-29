@@ -14,12 +14,15 @@
   
   /* Modal Content/Box */
   .modal-content {
+    position: fixed;
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     border-radius: 15px;
-    width: 80%; /* Could be more or less, depending on screen size */
+    left: 10%;
+    width: 80%; 
+    top:10%;
+    box-sizing: border-box;
   }
 .modal.show {
     display: block;
