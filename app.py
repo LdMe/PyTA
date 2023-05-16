@@ -82,7 +82,8 @@ def get_response(chat_name):
     pyta.load_chat(chat_name)
     print("numWords:",num_words,flush=True)
     pyta.get_response(num_words=num_words)
-    return jsonify(pyta.get_chat())
+   
+    return  jsonify(pyta.get_chat()), 200
 
 @app.route("/api/chat/<chat_name>/save",methods=['POST'])
 def save_messages(chat_name):

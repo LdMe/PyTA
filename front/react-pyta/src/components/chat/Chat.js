@@ -95,14 +95,20 @@ const Chat = ({ chatName ,goBack}) => {
         swapMessages(draggingIndex,id);
     }
     const handleSend = async(message) =>{
-       
+       try{
         await addMessage(message);
         lastMessage.current.scrollIntoView({ behavior: 'smooth' });
         setLoading(true);
         const response = await ask(chatName,maxWords);
+        console.log("response",response)
         setChat(response);
         setLoading(false);
         setHasNewMessage(true);
+       }catch(error){
+              console.log(error);
+              setLoading(false);
+         }
+
 
     }
     const getLastMessages= () =>{

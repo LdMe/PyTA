@@ -4,7 +4,7 @@ Elemento que representa um item da lista de conversaciones, cada uno tiene su tÃ
 
 import React from 'react';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 import { deleteChat } from '../../utils/chat';
 
 const ChatListItem = ({ chat ,getChat,onDelete}) => {
@@ -16,10 +16,14 @@ const ChatListItem = ({ chat ,getChat,onDelete}) => {
   };
 
   return (
-    <li >
-      <a className="chat-link" onClick={()=>getChat(chat)}>{chat}</a>
+    
+    <li>
       
+      <Link to={`/chat/${chat}`} style={{ textDecoration: 'none' }} className="chat-link" onClick={()=>getChat(chat)}>
+      {chat}
+      </Link>
       <button onClick={handleDeleteChat} className="fas fa-trash-alt" title="Eliminar conversaciÃ³n"></button>
+      
     </li>
   );
 };

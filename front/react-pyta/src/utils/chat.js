@@ -75,10 +75,12 @@ const swapMessages = (chatName,draggingIndex,targetIndex) => {
 const ask = (chatName,wordCount=1000) =>{
     return new Promise((resolve,reject)=>{
         
-        axios.post(`${HOST_URL}/chat/${chatName}`, {
-                numWords: wordCount
+        axios.post(`${HOST_URL}/chat/${chatName}`,
+        {
+            numWords: wordCount
         })
         .then(response => {
+            console.log("responssa",response)
             resolve(response.data);
         })
         .catch(error => reject(error));

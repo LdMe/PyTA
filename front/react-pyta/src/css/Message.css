@@ -53,9 +53,12 @@
 code {
     border-radius: 5px ;
     padding: 10px;
+   
     margin:10px;
 }
-
+p code {
+    font-weight: bold;
+}
 @media screen and (max-width: 1024px) {
     .message,.template {
         max-width: 100%;

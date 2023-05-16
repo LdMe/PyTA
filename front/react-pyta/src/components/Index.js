@@ -6,7 +6,7 @@ La lista de chats se obtiene del backend, y se actualiza cada vez que se crea un
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import ChatListItem from './chat/ChatListItem';
 import Chat from './chat/Chat';
 import TemplateList from './template/TemplateList';
@@ -16,31 +16,53 @@ const Index = () => {
   const [newChat, setNewChat] = useState('');
   const [chatName, setChatName] = useState(null);
   const [chatId, setChatId] = useState(1);
+  const { defaultChatName } = useParams();
+  const navigate = useNavigate();
   // Obtener lista de chats desde el backend
   useEffect(() => {
+    if (defaultChatName) {
+      setChatName(defaultChatName);
+    }
     getChats()
     .then(response => {
       setChats(response)
     })
     .catch(error => console.log(error))
   }, []);
+  useEffect(() => {
+    if (!chatName) {
+        getChats()
+        .then(response => {
+          setChats(response)
+        })
+        .catch(error => console.log(error))
+    }
+  }, [chatName]);
+
 
   // Función para crear un nuevo chat
   const handleNewChat = event => {
     event.preventDefault();
     setChatName(newChat);
+    navigate(`/chat/${newChat}`);
+    setNewChat('');
   };
   const getChat = (chat_name) => {
+    // redirect to chat/:defaultChatName
+
+
     setChatName(chat_name);
   };
   const handleDeleteChat = (chat) => {
     setChats (chats.filter(c => c !== chat));
   };
   const clearChat = (reset) => {
+
     if (reset===true) {
       setChatId(chatId + 1);
     }
     else {
+      navigate('/');
       setChatName(null);
     }
   };

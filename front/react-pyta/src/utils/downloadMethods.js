@@ -24,7 +24,6 @@ const downloadAsPDF = async(chatName) => {
         compress: true,
     });
     const width = pdf.internal.pageSize.getWidth();
-    
     let messages = Array.from(document.querySelectorAll('div.assistant'));
     messages = messages.map((element) => {
         // add span tags to text inside pre tags and not inside span tags
@@ -49,6 +48,9 @@ const downloadAsPDF = async(chatName) => {
         <div style={{"width":`${width * 2  -70}px`, "margin": "auto"}}>
          <style>
             {`
+            * {
+                font-family: sans-serif;
+            }
             .assistant{
                 padding: 5px;
                 background-color: #fff;
@@ -63,6 +65,10 @@ const downloadAsPDF = async(chatName) => {
             img {
                 max-width: 100%;
                 margin: auto;
+            }
+            strong {
+                font-weight: bold;
+                line-height: 1.4;
             }
             `}
             
@@ -85,7 +91,7 @@ const downloadAsPDF = async(chatName) => {
             
         },
         autoPaging: 'text',
-        margin: [12, 8, 15, 8],
+        margin: [12, 12, 15, 12],
         html2canvas: { scale: 0.5 },
 
     });
