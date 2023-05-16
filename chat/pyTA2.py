@@ -15,14 +15,12 @@ class Pyta:
     def get_response(self,chat=None,num_words=1500):
         if not chat:
             chat = self.chatbot.get_clean_messages(num_words=num_words)
-        print(chat)
+            print("chat",chat,flush=True)
         try:
             response = self.api.get_response_multi(chat)
         except Exception as e:
-            print(e)
             return "Ha ocurrido un error:\n"+str(e)
         self.add_response(response)
-        print(response)
         return response
     
     def add_context(self,context):
@@ -49,6 +47,7 @@ class Pyta:
     def add_message(self,message,role="user",template = None):
         if template:
             message = self.fill_template(template,message)
+            print("message",message,flush=True)
         self.chatbot.add_message(role=role,message=message)
     
     def delete_message(self,chat_name,message_id):
@@ -68,13 +67,7 @@ class Pyta:
     #Templates
     #-------------------------------------
     def get_templates(self):
-        template_names= Chat.get_template_names()
-        templates = []
-        for template_name in template_names:
-            template = self.get_template(template_name)
-            template = {"name":template_name,"content":template["content"],"replace_word":template["replace_word"]}
-            templates.append(template)
-        print ("templates",templates)
+        templates= Chat.get_templates()
         return templates
     
     def get_template(self,template_name):
@@ -86,7 +79,9 @@ class Pyta:
     def add_template(self,template_name,template,replace_word):
         Chat.create_template(template_name,template,replace_word)
 
+    def swap_messages(self,chat_name,message1,message2):
+        self.chatbot.swap_messages(chat_name,message1,message2)
+    
     def fill_template(self,template_name,text):
-        print(template_name,flush=True)
         return Chat.fill_template(template_name,text)
     

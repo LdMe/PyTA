@@ -69,6 +69,15 @@ class Chat {
         document.body.removeChild(element);
     }
 
+    downloadMessagesAsPDF() {
+        const chat_name = this.getChatName() + '.pdf';
+        const content = this.messages.filter(chat => chat.role == 'assistant').map(chat => chat.content).join("\n\n");
+        const doc = new jsPDF();
+        doc.text(content, 10, 10);
+        doc.save(chat_name);
+
+    }
+
     getLastMessagesByWordCount() {
         let lastMessages = [];
         let wordCountTotal = 0;
@@ -87,8 +96,8 @@ class Chat {
     async addMessage(content, role,template="default") {
         const chat_name = this.getChatName();
         if (content.length != 0 ){
-            await fetch('/api/chat/' + chat_name, {
-                method: 'PUT',
+            await fetch('/api/chat/' + chat_name+'/add', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },

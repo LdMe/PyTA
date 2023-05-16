@@ -1,0 +1,64 @@
+#nav {
+
+    background-color: #333; /* color del fondo del navbar */
+    height: 50px; /* altura del navbar */
+    display: flex; /* convierte los elementos en línea */
+    
+    border-radius: 5px;
+    flex-direction: row;
+    padding-bottom: 10px;
+  }
+#nav-main {
+    /* sticky navbar */
+    position: fixed;
+    bottom: 0;
+    left: 35%;
+    width: 30%;
+    z-index: 100;
+    opacity: 0.9;
+}
+
+
+  
+ #nav ul {
+    list-style: none; /* elimina las viñetas de la lista */
+    margin: 0; /* elimina los márgenes predeterminados de la lista */
+    padding: 0; /* elimina los espacios predeterminados dentro y fuera de la lista */
+    display: flex; /* convierte los elementos en línea */
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+ #nav li, .nav-buttons {
+    margin: 10px 10px; /* márgenes a la izquierda y derecha para separar los elementos */
+  }
+#nav li input {
+  width:100%;
+}
+#nav  a,#nav span, .nav-link {
+    color: white; /* color del texto de los links */
+    text-decoration: none; /* elimina la subraya del texto de los links */
+    font-weight: bold; /* establece el peso de la fuente en negrita */
+  }
+#nav a {
+    display: block; /* convierte los links en bloques para ajustar el espacio interno */
+}
+
+  
+ #nav a:hover {
+    background-color: #555; /* color de fondo del hover de los links */
+  }
+
+  @media screen and (max-width: 1024px) {
+    #nav-main {
+        width: 100%;
+        left: 0;
+    }
+    #nav li input{
+      width: 40vw;
+      font-size: 24px;
+    }
+    #nav {
+      height: 100px;
+    }
+}
