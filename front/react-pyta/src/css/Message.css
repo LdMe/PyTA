@@ -65,6 +65,5 @@ p code {
     }
     .message textarea, .template textarea {
         width: 100%;
-        font-size: 1.5rem;
     }
 }
