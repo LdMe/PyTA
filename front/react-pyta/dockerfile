@@ -23,9 +23,13 @@ COPY . .
 
 EXPOSE 3000
 
-# Añadir variables de entorno
+# Añadir variables de entorno de React desde el archivo .env
 
-ENV REACT_APP_BACKEND_IP=192.168.1.130
+ARG REACT_APP_BACKEND_IP
+ENV REACT_APP_BACKEND_IP=${REACT_APP_BACKEND_IP} 
+
+
+#ENV REACT_APP_BACKEND_IP=192.168.1.130
 # Comando para ejecutar la aplicación
 
 CMD ["npm", "start"]

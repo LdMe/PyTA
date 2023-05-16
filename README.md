@@ -1,8 +1,8 @@
 # PyTA - Python Teaching Assistant
 
-![pyta](static/img/pyta.png)
+![pyta](static/img/pyta-sm.png)
        
-PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de profesores y estudiantes. Permite descargar las respuestas en formato Markdown y exportarlas a un archivo PDF (próximamente).
+PyTA es un asistente de enseñanza hecho con Python y React que utiliza la API de OpenAI para proporcionar respuestas relevantes y personalizadas a las consultas de profesores y estudiantes. Permite descargar las respuestas en formato Markdown y exportarlas a un archivo PDF.
 
 
 ## Índice
@@ -10,7 +10,6 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 - [Puesta en marcha](#puesta-en-marcha)
   - [.env](#env)
   - [Docker](#docker)
-  - [Instalación con Python](#instalación-con-python)
 - [Uso](#uso)
 
 ---
@@ -19,17 +18,20 @@ PyTA es un asistente de enseñanza de Python que utiliza la API de OpenAI para p
 
 ### .env
 
-El archivo `.env` contiene las credenciales de OpenAI .
+El archivo `.env` contiene las credenciales de OpenAI  y la IP del backend.
 Es necesario contar con credenciales de OpenAI para usar PyTA. Para ello, se debe crear una cuenta en la plataforma y generar una clave de API y una organización. Estas credenciales se deben guardar en el archivo `.env` en la raíz del proyecto. El archivo `.env` debe tener el siguiente formato:
 
 ```
 OPENAI_API_KEY=<clave_de_api>
 OPENAI_ORGANIZATION=<ID_de_la_organizacion>
+REACT_APP_BACKEND_IP=<ip o url del backend>
 
 ```
 Filas:
   - `<clave_de_api>`: Clave de API de OpenAI.
   - `<ID_de_la_organizacion>`: ID de la organización de OpenAI.
+  - `<ip o url del backend>`: IP o URL del backend. Por defecto es `localhost`,pero si se desea acceder desde otra máquina, se debe cambiar a la IP de la máquina donde se ejecuta el backend. Por ejemplo, si el backend se ejecuta en la máquina con IP `192.168.1.5`, la fila quedaría así: `REACT_APP_BACKEND_IP=192.168.1.5`.
+
 
 
 Podemos usar el archivo [.env.example](.env.example) como plantilla.
@@ -52,34 +54,13 @@ Los contenedores de PyTA y mongodb se reiniciarán automáticamente, por lo que 
 
 ---
 
-### Instalación con Python y React
-Si no deseamos usar docker, se deben seguir los siguientes pasos:
-
-1. Tener instalado Python 3.10 o superior.
-
-2. Tener un servidor de mongodb en localhost:27017 o cambiar el archivo mongo_connection.py para que se conecte a otro servidor.
-
-3. Instalar las librerías necesarias. Para esto, se puede usar el gestor de paquetes `pip` y ejecutar el siguiente comando: 
-
-```bash
-pip install -r requirements.txt
-```
-
- Este archivo `requirements.txt` especifica las librerías y sus versiones necesarias para poder utilizar PyTA.
-
-Una vez realizados estos pasos, PyTA está listo para ser utilizado. Se puede crear el servidor de PyTA con el siguiente comando:
-
-```
-python3 app.py
-
-```
 ----
 ## Uso
 
-Accedemos en el navegador a la dirección `localhost:5500`.
+Accedemos en el navegador a la dirección `localhost:3000`.
 * La pantalla principal nos mostrará la lista de conversaciones y podremos crear una nueva conversación o continuar una ya existente.
 * En la conversación, podemos escribir libremente y PyTA responderá con una respuesta personalizada. También podemos modificar los mensajes o cambiar el rol de estos (usuario, asistente o sistema), cambiar el orden en el que aparecen, etc. 
-* La sección plantillas, a la que podemos acceder desde la barra de navegación, nos permite crear plantillas para los mensajes que se enviarán al asistente. Estas plantillas se pueden usar para crear mensajes de forma más rápida y sencilla.
+* La sección plantillas nos permite crear plantillas para los mensajes que se enviarán al asistente. Estas plantillas se pueden usar para crear mensajes de forma más rápida y sencilla.
 
 ---
 
