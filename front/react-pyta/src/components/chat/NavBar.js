@@ -1,4 +1,4 @@
-import '../../css/NavBar.css';
+import './NavBar.scss';
 
 const Navbar = ({navButtons}) => (
     <nav id="nav-main">

@@ -50,7 +50,7 @@ const TemplateList = () => {
     }
 
     const templateList = <section>
-        <ul id="lista-links">
+        <ul className="lista-links">
             {templates.map(template => <TemplateListItem  key={template._id.$oid} template={template}  deleteTemplate={handleDeleteTemplate} />)}
         </ul>
         <form onSubmit={handleNewTemplate} className="new-conversation">

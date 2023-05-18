@@ -1,5 +1,5 @@
 
-import '../../css/Modal.css';
+import './Modal.scss';
 
 const Modal = ({ children, show, onClose }) => {
     const showHideClassName = show ? 'modal show' : 'modal';

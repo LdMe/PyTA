@@ -1,0 +1,147 @@
+
+.lista-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 600px;
+    overflow-y: scroll;
+    background-color: #faf7df;
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 15px;
+    & li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        margin-bottom: 10px;
+        width: 80%;
+        padding: 10px ,0;
+        background-color: #efefef;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        & a {
+            text-decoration: none;
+            color: #333;
+            margin-right: 5px;
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+            margin-left : 0;
+        }
+        &:hover {
+            background-color: #ddd;
+        }
+    }
+}
+  
+.btn-borrar {
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer;
+    & i {
+        color: #b43030; /* color del icono de la basura */
+        font-size: 20px; /* tamaño del icono de la basura */
+        vertical-align: middle; 
+    }
+}
+  
+
+  
+  main {
+    margin-top: 50px; /* margen superior para que no se superponga con el navbar */
+  }
+  
+  .fas {
+    font-size: 24px;
+    &:hover {
+      font-size: 32px;
+      cursor: pointer;
+    }
+  }
+  .fa-lock, .fa-save,.selected .fa-arrows-alt {
+    color: #188231;
+    &:hover {
+      color: #1bd446;
+    }
+  }
+
+  .fa-edit {
+    color: #8d6b22;
+    &:hover {
+      color: #e1c245;
+    }
+  }
+  .fa-paper-plane,.fa-circle-plus {
+    color: #1e5e9c;
+    &:hover {
+      color: #2cb3f2;
+    }
+  }
+  .fa-trash, .fa-times, .fa-trash-alt {
+    color: #932d0e;
+    &:hover  {
+        color: #ff0000; /* color del icono de la basura al pasar por encima */
+      }
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  button.fas {
+    background-color: transparent;
+    border: none;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .main-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 50%;
+    max-height: 50vh;
+  }
+  
+  h1, h2 {
+    text-align: center;
+  }
+
+  .new-conversation {
+    text-align: center;
+    margin: 20px auto;
+  }
+  @media screen and (max-width: 1024px) {
+    .fas {
+      font-size: 30px;
+      margin: 0 10px;
+    }
+    .fas:hover {
+      font-size: 40px;
+    }
+    #nav {
+      height: 50px;
+    }
+    main {
+      margin-top: 80px;
+      margin-bottom: 120px;
+    }
+    article {
+      margin: 0 auto;
+
+    }
+    section {
+      padding: 5px;
+    }
+    
+    select {
+      
+      width: 50%;
+    }
+    .lista-links {
+        width: 90%;
+    }
+  }
+    

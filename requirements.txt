@@ -6,3 +6,4 @@ pymongo
 pdfkit
 flask-cors
 flask-swagger
+flask-socketio

@@ -62,8 +62,17 @@ p code {
 @media screen and (max-width: 1024px) {
     .message,.template {
         max-width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
     .message textarea, .template textarea {
         width: 100%;
+        font-size: 14px;
     }
+    .message > article {
+        padding: 5px;
+    }
+    .message pre code {
+        font-size: 10px;
+    } 
 }

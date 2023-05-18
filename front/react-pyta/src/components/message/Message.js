@@ -10,7 +10,7 @@ import axios from 'axios';
 import {updateMessage as updateM,createMessage as createM} from '../../utils/message';
 import MessageButtons from './MessageButtons';
 import MessageForm from './MessageForm';
-import '../../css/Message.css';
+import './Message.scss';
 
 const Message = ({ originalMessage,chatName,shadow ,moving, handleDrag,handleDrop, onDelete}) => {
     const [edit, setEdit] = useState(false);

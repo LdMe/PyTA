@@ -13,11 +13,11 @@ import MessageForm from '../message/MessageForm';
 import Navbar from './NavBar';
 import Modal from '../modal/Modal';
 import MaxWordsInput from './maxWordsInput';
-import '../../css/Chat.css';
+import './Chat.scss';
 import {getChat as getC,deleteMessage as deleteM, addMessage as addM,swapMessages as swapM, ask,getLastMessagesByWordCount} from '../../utils/chat';
 import { downloadAsMarkdown as downloadMD, downloadAsPDF as downloadPDF } from '../../utils/downloadMethods';
-
-
+import openSocket from 'socket.io-client';
+const socket = openSocket(`http://${process.env.REACT_APP_BACKEND_IP ? process.env.REACT_APP_BACKEND_IP : 'localhost'}:5500`);
 const Chat = ({ chatName ,goBack}) => {
     const [chat, setChat] = useState(null);
     const [dragging, setDragging] = useState(false);
@@ -32,7 +32,14 @@ const Chat = ({ chatName ,goBack}) => {
     useEffect(() => {
         getChat();
         document.title = `${chatName} PyTA`;
-        
+        socket.on('new_message', (data) => {
+            console.log("new message",data);
+            if (data.response === chatName){
+               getChat();
+               setHasNewMessage(true);
+                
+            }
+        });
     }, []);
     useEffect(() => {
         if (lastMessage.current){
@@ -99,11 +106,7 @@ const Chat = ({ chatName ,goBack}) => {
         await addMessage(message);
         lastMessage.current.scrollIntoView({ behavior: 'smooth' });
         setLoading(true);
-        const response = await ask(chatName,maxWords);
-        console.log("response",response)
-        setChat(response);
-        setLoading(false);
-        setHasNewMessage(true);
+        ask(chatName,maxWords);
        }catch(error){
               console.log(error);
               setLoading(false);

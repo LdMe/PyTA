@@ -12,15 +12,17 @@ class Pyta:
     def new_chat(self,chat_name):
         self.chatbot = Chat(chat_name)
     
-    def get_response(self,chat=None,num_words=1500):
+    def get_response(self,chat=None,num_words=1500,chat_name=None):
+        chat_name = chat_name if chat_name else self.chatbot.chat_name
         if not chat:
-            chat = self.chatbot.get_clean_messages(num_words=num_words)
+            chatbot = Chat(chat_name)
+            chat = chatbot.get_clean_messages(num_words=num_words)
             print("chat",chat,flush=True)
         try:
             response = self.api.get_response_multi(chat)
         except Exception as e:
             return "Ha ocurrido un error:\n"+str(e)
-        self.add_response(response)
+        self.add_response(response,chat_name=chat_name)
         return response
     
     def add_context(self,context):
@@ -44,11 +46,13 @@ class Pyta:
         self.chatbot = Chat(chat_name)
         self.chatbot.save_chat(content)
         
-    def add_message(self,message,role="user",template = None):
+    def add_message(self,message,role="user",template = None,chat_name=None):
+        chat_name = chat_name if chat_name else self.chatbot.chat_name
         if template:
             message = self.fill_template(template,message)
             print("message",message,flush=True)
-        self.chatbot.add_message(role=role,message=message)
+        chatbot = Chat(chat_name)
+        chatbot.add_message(role=role,message=message)
     
     def delete_message(self,chat_name,message_id):
         self.load_chat(chat_name)
@@ -58,8 +62,10 @@ class Pyta:
         self.load_chat(chat_name)
         self.chatbot.update_message(message_id,message,role)
     
-    def add_response(self,response):
-        self.chatbot.add_message(role="assistant",message=response)
+    def add_response(self,response,chat_name=None):
+        chat_name = chat_name if chat_name else self.chatbot.chat_name
+        chatbot = Chat(chat_name)
+        chatbot.add_message(role="assistant",message=response)
     
     def get_last_role(self):
         return self.chatbot.get_last_role()

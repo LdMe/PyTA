@@ -1,0 +1,97 @@
+.inline-code {
+    background: #1E1E1E;
+    color: #DCDCDC;
+}
+body {
+    margin-bottom: 50px;
+}
+h1 {
+    font-size: 2.5em;
+    margin: 0.5em 0;
+}
+.chat-link:hover {
+    cursor: pointer;
+}
+.chat {
+    width: 90%;
+    margin: 0 auto;
+    text-align: start;
+}
+.new-conversation{
+    max-height: 600px;
+    overflow-y: scroll;
+    background-color: #faf7df;
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+    font-size: 18px;
+    border-radius: 15px;
+    & input, & textarea {
+        width: 70%;
+        padding: 10px;
+        border-radius: 15px;
+        box-sizing: border-box;
+        resize: vertical;
+        min-height: 50px;
+        margin: 10px auto;
+        display: block;
+    }
+    & textarea {
+        min-height: 150px;
+    } 
+    & button[type=submit] {
+        width: 20%;
+        padding: 10px;
+        border-radius: 15px;
+        font-size: 18px;
+        box-sizing: border-box;
+        resize: vertical;
+        min-height: 50px;
+        margin: 10px auto;
+        display: block;
+        background-color: #a7c194;
+        border: none;
+        color: #1E1E1E;
+        font-weight: bold;
+        &:hover {
+            background-color: #8ab07c;
+            cursor: pointer;
+        }
+    } 
+}
+
+
+
+section.draggable {
+    cursor: grab;
+  }
+
+
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+.danger {
+    border : 2px solid red;
+    background-color: #fcdf5f;
+}
+@media screen and (max-width: 1024px) {
+    .chat {
+        width: 90%;
+    }
+    .new-conversation {
+        width: 90%;
+    }
+    .new-conversation input {
+        width: 90%;
+    }
+    .new-conversation textarea {
+        width: 90%;
+    }
+    .new-conversation button[type=submit] {
+        width: 90%;
+    } 
+    
+    
+}

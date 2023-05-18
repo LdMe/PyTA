@@ -3,13 +3,18 @@ from flask import render_template, redirect, url_for
 from flask_cors import CORS
 from chat.pyTA2 import Pyta
 from markdown import markdown
-
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 cors = CORS(app, origins="*")
 pyta = Pyta()
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-
+@socketio.on('connect')
+def test_connect():
+    print("connected to socket: "+request.sid,flush=True)
+    
 # web routes
 @app.route("/")
 def index():
@@ -67,7 +72,7 @@ def add_message(chat_name):
         chat = pyta.get_chat()
         return jsonify(chat)
     template = message["template"] if ("template" in message and message["template"]!= "default") else None
-    pyta.add_message(message["content"],message["role"],template)
+    pyta.add_message(message["content"],message["role"],template,chat_name)
     chat = pyta.get_chat()
     return jsonify(chat)
 
@@ -81,8 +86,9 @@ def get_response(chat_name):
         num_words = int(data["numWords"])
     pyta.load_chat(chat_name)
     print("numWords:",num_words,flush=True)
-    pyta.get_response(num_words=num_words)
-   
+    pyta.get_response(num_words=num_words,chat_name=chat_name)
+    pyta.load_chat(chat_name)
+    socketio.emit('new_message', {'response': chat_name})
     return  jsonify(pyta.get_chat()), 200
 
 @app.route("/api/chat/<chat_name>/save",methods=['POST'])

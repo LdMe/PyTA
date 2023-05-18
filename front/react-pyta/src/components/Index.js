@@ -5,7 +5,7 @@ La lista de chats se obtiene del backend, y se actualiza cada vez que se crea un
 */
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import './Index.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import ChatListItem from './chat/ChatListItem';
 import Chat from './chat/Chat';
@@ -71,7 +71,7 @@ const Index = () => {
         <h2>Tu asistente inteligente</h2>
         <img src="/img/pyta.png" alt="Imagen" className="main-image"/>
         <h2>Conversaciones</h2>
-        <ul id="lista-links">
+        <ul className="lista-links">
             {chats.map(chat => <ChatListItem  key={chat} chat={chat}  getChat={getChat} onDelete={handleDeleteChat}/>)}
         </ul>
         <form onSubmit={handleNewChat} className="new-conversation ">
