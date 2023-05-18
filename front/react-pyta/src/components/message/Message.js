@@ -6,7 +6,7 @@ import Highlight from 'react-highlight';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { useState } from 'react';
 import axios from 'axios';
-
+import './style.scss';
 import {updateMessage as updateM,createMessage as createM} from '../../utils/message';
 import MessageButtons from './MessageButtons';
 import MessageForm from './MessageForm';
@@ -84,7 +84,7 @@ const Message = ({ originalMessage,chatName,shadow ,moving, handleDrag,handleDro
     //html = html.replace(/`([^`]+)`/g, '<codes className="inline-code">$1</codes>');
     return (
         <section  className={className} id={message._id.$oid} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseOut} onClick={handleClick}>
-            <article>
+            <article >
                 <MessageButtons message={message} handleDrag={handleDragStart} handleEdit={handleEdit} handleDelete={handleDelete}/>
                 <Highlight  innerHTML={true}>
                     {html}

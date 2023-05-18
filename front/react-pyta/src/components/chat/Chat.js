@@ -2,12 +2,8 @@
 Componente que muestra una conversación entera, con todos los mensajes que contiene, los mensajes son de clase 'user','assistant' y 'system'
 */
 import React, { useState, useEffect,useRef } from 'react';
-import 'highlight.js/scss/vs2015.scss';
-//import 'highlight.js/scss/googlecode.scss';
-import { renderToStaticMarkup,renderToString } from 'react-dom/server';
-import axios from 'axios';
-import jsPDF from 'jspdf';
-
+/* import 'highlight.js/scss/vs2015.scss';
+ */
 import Message from '../message/Message';
 import MessageForm from '../message/MessageForm';
 import Navbar from './NavBar';
@@ -28,6 +24,7 @@ const Chat = ({ chatName ,goBack}) => {
     const [maxWords, setMaxWords] = useState(1000);
     const lastMessage = useRef(null);
     const [lastMessages,setLastMessages] = useState([]);
+    const [darkMode,setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
 
     useEffect(() => {
         getChat();
@@ -118,6 +115,10 @@ const Chat = ({ chatName ,goBack}) => {
         const response = getLastMessagesByWordCount(chat,maxWords);
         return  response;
     }
+    const handleDarkMode = () => {
+        localStorage.setItem('darkMode',!darkMode);
+        setDarkMode(!darkMode);
+    }
     if (!chat) {
         return <h1>Cargando...</h1>;
     }
@@ -126,7 +127,7 @@ const Chat = ({ chatName ,goBack}) => {
     return (
         <section className="chat">
             {downloading && <Modal show={true}><h1>Descargando...</h1></Modal>}
-            <main>
+            <main className={darkMode ?"dark" : "light"}>
                 <h1 >Conversación {chatName}</h1>
                 {chat.map((message,index) => {
                     const messageShadow = shadow || lastMessages && lastMessages.findIndex(
@@ -157,6 +158,7 @@ const Chat = ({ chatName ,goBack}) => {
             <footer >
                 <Navbar key={1} navButtons={[
                     {icon: "fa-home", onClick:goBack,title:"Inicio"},
+                    {icon:darkMode? "fa-moon":"fa-sun", onClick:handleDarkMode,title:"Modo oscuro"},
                     {icon:"", onClick:() => {},title:`${maxWords} palabras`,html : 
                     <MaxWordsInput key={1} maxWords={maxWords} onSubmit={setMaxWords}/>
                     },
