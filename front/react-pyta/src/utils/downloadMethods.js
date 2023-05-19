@@ -73,7 +73,7 @@ const downloadAsPDF = async(chatName) => {
             `}
             
             </style>   
-            {messages.map((element) => <div dangerouslySetInnerHTML={{__html: element}}></div>)}
+            {messages.map((element) => <div className={localStorage.getItem("darkMode")==="true" ? "dark" : "light"} dangerouslySetInnerHTML={{__html: element}}></div>)}
         </div>
         );
     // download html
