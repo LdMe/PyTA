@@ -56,8 +56,7 @@ def get_chats():
 
 @app.route("/api/chat/<chat_name>",methods=['GET'])
 def chat_api(chat_name):
-    pyta.load_chat(chat_name)
-    chat = pyta.get_chat()
+    chat = pyta.get_chat(chat_name)
     return jsonify(chat)
 
 @app.route("/api/chat/<chat_name>",methods=['DELETE'])
@@ -69,11 +68,12 @@ def delete_chat(chat_name):
 def add_message(chat_name):
     message = request.get_json()
     if "content" not in message or message["content"] == "" and message["template"] == "":
-        chat = pyta.get_chat()
+        chat = pyta.get_chat(chat_name)
         return jsonify(chat)
     template = message["template"] if ("template" in message and message["template"]!= "default") else None
     pyta.add_message(message["content"],message["role"],template,chat_name)
-    chat = pyta.get_chat()
+
+    chat = pyta.get_chat(chat_name)
     return jsonify(chat)
 
 @app.route("/api/chat/<chat_name>",methods=['POST'])

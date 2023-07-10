@@ -44,6 +44,7 @@ const downloadAsPDF = async(chatName) => {
 
         return element.outerHTML;
     })
+    console.log("messages",messages)
     const html =renderToStaticMarkup(
         <div style={{"width":`${width * 2  -70}px`, "margin": "auto"}}>
          <style>

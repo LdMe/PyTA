@@ -33,7 +33,9 @@ class Pyta:
 
     def load_chat(self,chat_name):
         self.chatbot = Chat(chat_name)
-    def get_chat(self):
+    def get_chat(self,chat_name=None):
+        if chat_name:
+            self.load_chat(chat_name)
         return self.chatbot.get_chat()
     
     def get_chat_names(self):
